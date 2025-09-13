@@ -20,7 +20,7 @@
 }
 
 .filter-field {
-  max-width: 250px;
+  width: 250px;
   height: 55px;
 }
 
@@ -35,6 +35,7 @@
 .filter-toggle-btn {
   display: none;
 }
+
 /* ---------- Table ---------- */
 .table-section {
   border: 1px solid #ddd;
@@ -120,8 +121,35 @@
 
 .task-actions {
   display: flex;
+  justify-content: space-between;
   gap: 6px;
   margin-top: 8px;
+}
+.btn-submit {
+  background-color: #4b4f94;
+  color: #fff !important;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-submit:hover {
+  background-color: #3a3e7a;
+  transform: translateY(-1px);
+}
+
+.btn-submit:active {
+  background-color: #2e325f;
+  transform: translateY(1px);
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* ---------- Breakpoints ---------- */
@@ -130,7 +158,7 @@
     display: none;
   }
   .cards-section {
-    display: block; 
+    display: block;
   }
   .filters-container {
     flex-direction: column;

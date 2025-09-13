@@ -4,6 +4,9 @@ import { AssignTaskComponent } from './pages/admin/assign-task/assign-task.compo
 import { TasksComponent } from './pages/admin/tasks/tasks.component';
 import { AdminComponent } from './pages/admin/admin/admin.component';
 import { EmployeeComponent } from './pages/admin/employee/employee.component';
+import { EmpHomeComponent } from './pages/employee/emp-home/emp-home.component';
+import { EmpTasksComponent } from './pages/employee/emp-tasks/emp-tasks.component';
+import { EmpComponent } from './pages/employee/emp/emp.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +18,14 @@ export const routes: Routes = [
       { path: 'assign-task', component: AssignTaskComponent },
       { path: 'tasks', component: TasksComponent },
       { path: 'employee', component: EmployeeComponent },
+    ],
+  },
+  {
+    path: '',
+    component: EmpComponent,
+    children: [
+      { path: '', component: EmpHomeComponent },
+      { path: 'tasks', component: EmpTasksComponent },
     ],
   },
 ];

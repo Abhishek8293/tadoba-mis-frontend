@@ -56,6 +56,9 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  isMobile: boolean = false;
+  filtersOpen: boolean = false;
+
   // Filters
   selectedStatus: string = '';
   selectedDate: Date | null = null;
@@ -192,7 +195,7 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     'submissionDate',
     'status',
     'view',
-    'submit'
+    'submit',
   ];
 
   dataSource = new MatTableDataSource<Task>(this.tasks);
@@ -205,7 +208,6 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
       const matchesStatus =
         !f.status || task.status.toLowerCase() === f.status.toLowerCase();
 
-
       const matchesDate =
         !f.date ||
         new Date(task.targetDate).toDateString() ===
@@ -213,6 +215,10 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
 
       return matchesStatus && matchesDate;
     };
+
+    //
+    this.checkIfMobile();
+    window.addEventListener('resize', () => this.checkIfMobile());
   }
 
   ngAfterViewInit(): void {
@@ -232,5 +238,12 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     this.selectedStatus = '';
     this.selectedDate = null;
     this.applyFilters();
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;
+    if (!this.isMobile) {
+      this.filtersOpen = true; // always open on desktop
+    }
   }
 }

@@ -57,6 +57,9 @@ export class TasksComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  isMobile: boolean = false;
+  filtersOpen: boolean = false;
+
   // Filters
   selectedStatus: string = '';
   selectedEmployee: string = '';
@@ -251,6 +254,10 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
       return matchesStatus && matchesEmployee && matchesDate;
     };
+
+    //
+    this.checkIfMobile();
+    window.addEventListener('resize', () => this.checkIfMobile());
   }
 
   ngAfterViewInit(): void {
@@ -272,5 +279,12 @@ export class TasksComponent implements OnInit, AfterViewInit {
     this.selectedEmployee = '';
     this.selectedDate = null;
     this.applyFilters();
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;
+    if (!this.isMobile) {
+      this.filtersOpen = true; // always open on desktop
+    }
   }
 }

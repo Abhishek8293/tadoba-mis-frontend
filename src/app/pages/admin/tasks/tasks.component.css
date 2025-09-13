@@ -6,20 +6,22 @@
 
 /* ---------- Filters ---------- */
 .filters-section {
+  margin-bottom: 15px;
+}
+
+.filters-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 15px;
-  margin-bottom: 18px;
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 12px;
 }
 
 .filter-field {
-  height: 60px;
-  min-width: 160px;
-  /* border: 1px solid red; */
+  max-width: 250px;
+  height: 55px;
 }
 
 .reset-field {
@@ -27,6 +29,12 @@
   align-items: center;
 }
 
+.filter-toggle-wrapper {
+  display: none;
+}
+.filter-toggle-btn {
+  display: none;
+}
 /* ---------- Table ---------- */
 .table-section {
   border: 1px solid #ddd;
@@ -42,7 +50,7 @@
 .modern-table th {
   background-color: #4b4f94 !important;
   color: white;
-  font-weight: 500 !important; 
+  font-weight: 500 !important;
 }
 .modern-table th,
 .modern-table td {
@@ -119,9 +127,41 @@
 /* ---------- Breakpoints ---------- */
 @media (max-width: 768px) {
   .table-section {
-    display: none; /* hide table */
+    display: none;
   }
   .cards-section {
-    display: block; /* show card view */
+    display: block; 
+  }
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    border: none;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+
+  .filter-toggle-wrapper{
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .filter-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .reset-field button {
+    width: 100%;
   }
 }

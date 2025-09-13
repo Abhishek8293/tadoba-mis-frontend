@@ -16,7 +16,6 @@
   gap: 14px;
 }
 
-/* KPI Card */
 .kpi-card {
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -95,8 +94,44 @@
   }
 }
 
+/* Mobile Redesign */
 @media (max-width: 480px) {
   .kpi-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* single column */
+    gap: 12px;
+  }
+
+  .kpi-card {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 12px 14px;
+  }
+
+  .kpi-icon {
+    font-size: 28px;
+    margin-right: 12px;
+    margin-top: 12px;
+    flex-shrink: 0;
+  }
+
+  .kpi-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .kpi-text h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 4px;
+  }
+
+  .kpi-value {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
   }
 }

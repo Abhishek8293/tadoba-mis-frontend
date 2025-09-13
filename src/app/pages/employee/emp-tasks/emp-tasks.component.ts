@@ -20,7 +20,6 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 
 interface Task {
   id: number;
-  name: string;
   task: string;
   assignedDate: Date;
   targetDate: Date;
@@ -29,7 +28,7 @@ interface Task {
 }
 
 @Component({
-  selector: 'app-tasks',
+  selector: 'app-emp-tasks',
   standalone: true,
   imports: [
     FormsModule,
@@ -50,42 +49,21 @@ interface Task {
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.css'],
+  templateUrl: './emp-tasks.component.html',
+  styleUrl: './emp-tasks.component.css',
 })
-export class TasksComponent implements OnInit, AfterViewInit {
+export class EmpTasksComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   // Filters
   selectedStatus: string = '';
-  selectedEmployee: string = '';
   selectedDate: Date | null = null;
-
-  // Sample employee list (15 Indian names)
-  employees: string[] = [
-    'Rahul Sharma',
-    'Priya Verma',
-    'Amit Patel',
-    'Neha Singh',
-    'Rohan Mehta',
-    'Kavya Iyer',
-    'Arjun Reddy',
-    'Sanya Malhotra',
-    'Vikram Desai',
-    'Ananya Gupta',
-    'Manish Kumar',
-    'Sneha Nair',
-    'Harshad Joshi',
-    'Pooja Bansal',
-    'Devansh Chawla',
-  ];
 
   // Sample data (15 tasks)
   tasks: Task[] = [
     {
       id: 1,
-      name: 'Rahul Sharma',
       task: 'Prepare Financial Report',
       assignedDate: new Date('2025-08-30'),
       targetDate: new Date('2025-09-05'),
@@ -94,7 +72,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 2,
-      name: 'Priya Verma',
       task: 'Client Meeting',
       assignedDate: new Date('2025-08-28'),
       targetDate: new Date('2025-09-03'),
@@ -103,7 +80,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 3,
-      name: 'Amit Patel',
       task: 'Submit Invoice',
       assignedDate: new Date('2025-08-27'),
       targetDate: new Date('2025-09-01'),
@@ -112,7 +88,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 4,
-      name: 'Neha Singh',
       task: 'Update Presentation',
       assignedDate: new Date('2025-08-31'),
       targetDate: new Date('2025-09-07'),
@@ -121,7 +96,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 5,
-      name: 'Rohan Mehta',
       task: 'Audit Documents',
       assignedDate: new Date('2025-08-29'),
       targetDate: new Date('2025-09-04'),
@@ -130,7 +104,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 6,
-      name: 'Kavya Iyer',
       task: 'Draft Proposal',
       assignedDate: new Date('2025-09-01'),
       targetDate: new Date('2025-09-09'),
@@ -139,7 +112,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 7,
-      name: 'Arjun Reddy',
       task: 'Prepare Training Plan',
       assignedDate: new Date('2025-08-30'),
       targetDate: new Date('2025-09-06'),
@@ -148,7 +120,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 8,
-      name: 'Sanya Malhotra',
       task: 'Organize Workshop',
       assignedDate: new Date('2025-09-01'),
       targetDate: new Date('2025-09-08'),
@@ -157,7 +128,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 9,
-      name: 'Vikram Desai',
       task: 'Follow-up with Vendor',
       assignedDate: new Date('2025-08-27'),
       targetDate: new Date('2025-09-02'),
@@ -166,7 +136,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 10,
-      name: 'Ananya Gupta',
       task: 'Design Brochure',
       assignedDate: new Date('2025-09-02'),
       targetDate: new Date('2025-09-10'),
@@ -175,7 +144,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 11,
-      name: 'Manish Kumar',
       task: 'Compile Survey Data',
       assignedDate: new Date('2025-08-31'),
       targetDate: new Date('2025-09-05'),
@@ -184,7 +152,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 12,
-      name: 'Sneha Nair',
       task: 'HR Interview Scheduling',
       assignedDate: new Date('2025-09-02'),
       targetDate: new Date('2025-09-11'),
@@ -193,7 +160,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 13,
-      name: 'Harshad Joshi',
       task: 'Market Analysis Report',
       assignedDate: new Date('2025-08-28'),
       targetDate: new Date('2025-09-03'),
@@ -202,7 +168,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 14,
-      name: 'Pooja Bansal',
       task: 'Inventory Check',
       assignedDate: new Date('2025-08-27'),
       targetDate: new Date('2025-09-01'),
@@ -211,7 +176,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
     },
     {
       id: 15,
-      name: 'Devansh Chawla',
       task: 'Prepare Newsletter',
       assignedDate: new Date('2025-09-04'),
       targetDate: new Date('2025-09-12'),
@@ -222,13 +186,13 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'srNo',
-    'name',
     'task',
     'assignedDate',
     'targetDate',
     'submissionDate',
     'status',
-    'action',
+    'view',
+    'submit'
   ];
 
   dataSource = new MatTableDataSource<Task>(this.tasks);
@@ -241,15 +205,13 @@ export class TasksComponent implements OnInit, AfterViewInit {
       const matchesStatus =
         !f.status || task.status.toLowerCase() === f.status.toLowerCase();
 
-      const matchesEmployee =
-        !f.employee || task.name.toLowerCase() === f.employee.toLowerCase();
 
       const matchesDate =
         !f.date ||
         new Date(task.targetDate).toDateString() ===
           new Date(f.date).toDateString();
 
-      return matchesStatus && matchesEmployee && matchesDate;
+      return matchesStatus && matchesDate;
     };
   }
 
@@ -261,7 +223,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
   applyFilters() {
     const filterObj = {
       status: this.selectedStatus,
-      employee: this.selectedEmployee,
       date: this.selectedDate,
     };
     this.dataSource.filter = JSON.stringify(filterObj);
@@ -269,7 +230,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
   resetFilters() {
     this.selectedStatus = '';
-    this.selectedEmployee = '';
     this.selectedDate = null;
     this.applyFilters();
   }

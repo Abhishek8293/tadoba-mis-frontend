@@ -1,0 +1,33 @@
+<div class="admin-home-wrapper">
+    <h2 class="page-title">Admin Dashboard</h2>
+
+    <div class="kpi-grid">
+        <!-- Total Tasks -->
+        <div class="kpi-card total">
+            <mat-icon class="kpi-icon">assignment</mat-icon>
+            <h3>Total Tasks</h3>
+            <p class="kpi-value">{{ totalTasks }}</p>
+        </div>
+
+        <!-- Completed -->
+        <div class="kpi-card completed">
+            <mat-icon class="kpi-icon">check_circle</mat-icon>
+            <h3>Completed</h3>
+            <p class="kpi-value">{{ completedTasks }}</p>
+        </div>
+
+        <!-- Pending -->
+        <div class="kpi-card pending">
+            <mat-icon class="kpi-icon">hourglass_empty</mat-icon>
+            <h3>Pending</h3>
+            <p class="kpi-value">{{ pendingTasks }}</p>
+        </div>
+
+        <!-- Late -->
+        <div class="kpi-card late">
+            <mat-icon class="kpi-icon">error_outline</mat-icon>
+            <h3>Late</h3>
+            <p class="kpi-value">{{ lateTasks }}</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,127 @@
+.tasks-wrapper {
+  padding: 20px;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  color: #222;
+}
+
+/* ---------- Filters ---------- */
+.filters-section {
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.filter-field {
+  height: 60px;
+  min-width: 160px;
+  /* border: 1px solid red; */
+}
+
+.reset-field {
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- Table ---------- */
+.table-section {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.modern-table th {
+  background-color: #4b4f94 !important;
+  color: white;
+  font-weight: 500 !important; 
+}
+.modern-table th,
+.modern-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.modern-table th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+
+.row-hover:hover {
+  background-color: #f5faff;
+}
+
+/* ---------- Status Pills ---------- */
+.status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pill-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.pill-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.pill-late {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ---------- Responsive Cards ---------- */
+.cards-section {
+  display: none;
+}
+
+.task-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.task-body p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* ---------- Breakpoints ---------- */
+@media (max-width: 768px) {
+  .table-section {
+    display: none; /* hide table */
+  }
+  .cards-section {
+    display: block; /* show card view */
+  }
+}

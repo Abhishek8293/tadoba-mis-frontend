@@ -1,0 +1,35 @@
+<div class="container">
+    <h2 class="page-title">📋 Assign New Task</h2>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+
+        <!-- Employee Select -->
+        <mat-form-field appearance="outline">
+            <mat-label>Select Employee</mat-label>
+            <mat-select formControlName="employee">
+                @for (emp of employees; track emp) {
+                <mat-option [value]="emp">{{ emp }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Target Date -->
+        <mat-form-field appearance="outline">
+            <mat-label>Target Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="targetDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Task Description -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Task Description</mat-label>
+            <textarea matInput rows="4" formControlName="task"></textarea>
+        </mat-form-field>
+
+        <!-- Submit Button -->
+        <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="taskForm.invalid">
+            <mat-icon>add</mat-icon>Assign Task
+        </button>
+    </form>
+</div>

@@ -1,0 +1,78 @@
+<div class="employee-wrapper">
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <div class="left-info">
+            <h3>Total Employees: <span>{{ totalEmployees }}</span></h3>
+        </div>
+
+        <div class="right-filter">
+            <div class="filter-field">
+                <mat-form-field appearance="outline" class="dept-filter">
+                    <mat-label>Department</mat-label>
+                    <mat-select [(ngModel)]="selectedDepartment" (selectionChange)="applyFilter()">
+                        <mat-option value="">All</mat-option>
+                        <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <button mat-button color="primary" (click)="resetFilter()">
+                <mat-icon>add</mat-icon> Add Emloyee
+            </button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-section">
+        <table mat-table matSort [dataSource]="dataSource" class="modern-table">
+            <!-- Sr No -->
+            <ng-container matColumnDef="srNo">
+                <th mat-header-cell *matHeaderCellDef>Sr. No.</th>
+                <td mat-cell *matCellDef="let emp; let i = index">{{ i + 1 }}</td>
+            </ng-container>
+
+            <!-- Name -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let emp">{{ emp.name }}</td>
+            </ng-container>
+
+            <!-- Department -->
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+                <td mat-cell *matCellDef="let emp">{{ emp.department }}</td>
+            </ng-container>
+
+            <!-- Action -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let emp">
+                    <button mat-icon-button color="primary"><mat-icon>remove_red_eye</mat-icon></button>
+                    <button mat-icon-button color="accent"><mat-icon>edit</mat-icon></button>
+                    <button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" class="row-hover"></tr>
+        </table>
+
+        <mat-paginator [length]="dataSource.filteredData.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons>
+        </mat-paginator>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="cards-section">
+        <div class="employee-card" *ngFor="let emp of dataSource.filteredData; let i = index">
+            <div class="employee-header">
+                <strong>#{{ i + 1 }} - {{ emp.name }}</strong>
+                <span class="dept-label">{{ emp.department }}</span>
+            </div>
+            <div class="employee-actions">
+                <button mat-icon-button color="primary"><mat-icon>remove_red_eye</mat-icon></button>
+                <button mat-icon-button color="accent"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
+            </div>
+        </div>
+    </div>
+</div>

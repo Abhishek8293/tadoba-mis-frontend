@@ -1,0 +1,69 @@
+<header class="header-container">
+    <div class="header-content">
+        <div class="logo-container">
+            <a routerLink="home" class="logo-link">
+                <img src="./logo.png" alt="Tadoba Logo" class="logo-img">
+            </a>
+            <!-- <a routerLink="home" class="logo-link">
+                <h4 class="logo">MIS</h4>
+            </a> -->
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a routerLink="home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="assign-task" class="nav-link">
+                        <span>Assign Task</span>
+                        <fa-icon [icon]="plusIcon"></fa-icon>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a routerLink="tasks" class="nav-link">
+                        <fa-icon [icon]="taskIcon"></fa-icon>
+                        <span>Task</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a routerLink="employee" class="nav-link">
+                        <span>Emloyee</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" (click)="toggleMenu()">
+            <fa-icon [icon]="isMenuOpen ? closeMenu : hamBurgerMenu"></fa-icon>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" [class.active]="isMenuOpen">
+        <ul class="mobile-nav-list">
+            <li class="mobile-nav-item">
+                <a routerLink="home" class="mobile-nav-link">Home</a>
+            </li>
+            <li class="mobile-nav-item">
+                <a routerLink="assign-task" class="mobile-nav-link">
+                    <span>Assign Task</span>
+                    <fa-icon [icon]="plusIcon"></fa-icon>
+                </a>
+            </li>
+            <li class="mobile-nav-item accordion">
+                <a routerLink="tasks" class="mobile-nav-link">
+                    <fa-icon [icon]="taskIcon"></fa-icon>
+                    <span>Task</span>
+                </a>
+            </li>
+             <li class="mobile-nav-item accordion">
+                <a routerLink="employee" class="mobile-nav-link">
+                    <span>Emloyee</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>

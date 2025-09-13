@@ -1,0 +1,102 @@
+.admin-home-wrapper {
+  padding: 20px;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  color: #222;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+/* KPI Card */
+.kpi-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 14px 12px;
+  background: #fff;
+  text-align: center;
+  transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.kpi-card:hover {
+  background: #f9f9f9;
+  transform: translateY(-2px);
+}
+
+.kpi-icon {
+  font-size: 46px;
+  height: 46px;
+  width: 46px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.kpi-card h3 {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Colors + light backgrounds */
+.kpi-card.total {
+  background: #f2f2fa;
+  border-color: #d1d1e6;
+}
+.kpi-card.total .kpi-icon,
+.kpi-card.total .kpi-value {
+  color: #4b4f94;
+}
+
+.kpi-card.completed {
+  background: #eaf7ef;
+  border-color: #cce5d6;
+}
+.kpi-card.completed .kpi-icon,
+.kpi-card.completed .kpi-value {
+  color: #28a745;
+}
+
+.kpi-card.pending {
+  background: #fff8e6;
+  border-color: #ffe0a3;
+}
+.kpi-card.pending .kpi-icon,
+.kpi-card.pending .kpi-value {
+  color: #ffc107;
+}
+
+.kpi-card.late {
+  background: #fdecec;
+  border-color: #f5c6cb;
+}
+.kpi-card.late .kpi-icon,
+.kpi-card.late .kpi-value {
+  color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

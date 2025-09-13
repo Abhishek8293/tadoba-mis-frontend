@@ -1,0 +1,116 @@
+.employee-wrapper {
+  padding: 20px;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  color: #222;
+}
+
+/* ---------- Filters ---------- */
+.filters-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.left-info h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.left-info span {
+  font-weight: 700;
+  color: #4b4f94;
+}
+
+.right-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.filter-field {
+  height: 55px;
+}
+.dept-filter {
+  min-width: 180px;
+}
+
+/* ---------- Table ---------- */
+.table-section {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.modern-table th {
+  background-color: #4b4f94 !important;
+  color: white;
+  font-weight: 500 !important;
+}
+
+.modern-table th,
+.modern-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.row-hover:hover {
+  background-color: #f5faff;
+}
+
+/* ---------- Card View ---------- */
+.cards-section {
+  display: none;
+}
+
+.employee-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dept-label {
+  background: #f0f0f5;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.employee-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .table-section {
+    display: none;
+  }
+  .cards-section {
+    display: block;
+  }
+}

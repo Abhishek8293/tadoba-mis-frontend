@@ -1,0 +1,66 @@
+<div class="login-wrapper">
+    <!-- Logo + Heading -->
+    <div class="login-header">
+        <img src="./logo.png" alt="Company Logo" class="logo" />
+        <h2 class="title">Management Information System</h2>
+    </div>
+
+    <!-- Tabs -->
+    <mat-tab-group>
+        <!-- Employee Login -->
+        <mat-tab label="Employee">
+            <form [formGroup]="employeeLoginForm" (ngSubmit)="onEmployeeLogin()" class="form-section">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>User ID</mat-label>
+                    <input matInput formControlName="userId" />
+                    <mat-error *ngIf="employeeLoginForm.get('userId')?.hasError('required')">
+                        User ID is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+                    <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="employeeLoginForm.get('password')?.hasError('required')">
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button class="submit-btn" type="submit">
+                    Login
+                </button>
+            </form>
+        </mat-tab>
+
+        <!-- Admin Login -->
+        <mat-tab label="Admin">
+            <form [formGroup]="adminLoginForm" (ngSubmit)="onAdminLogin()" class="form-section">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>User ID</mat-label>
+                    <input matInput formControlName="userId" />
+                    <mat-error *ngIf="adminLoginForm.get('userId')?.hasError('required')">
+                        User ID is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+                    <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="adminLoginForm.get('password')?.hasError('required')">
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button class="submit-btn" type="submit">
+                    Login
+                </button>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+</div>

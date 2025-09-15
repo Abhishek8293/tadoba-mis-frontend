@@ -1,0 +1,82 @@
+<div class="profile-wrapper">
+    <h2 class="title">Employee Profile</h2>
+
+    <div class="profile-field">
+        <span class="label">Name:</span>
+        <span class="value">Rahul Sharma</span>
+    </div>
+
+    <div class="profile-field">
+        <span class="label">Email:</span>
+        <span class="value">rahul.sharma&#64;example.com</span>
+    </div>
+
+    <div class="profile-field">
+        <span class="label">Department:</span>
+        <span class="value">Finance</span>
+    </div>
+
+    <div class="btn-group">
+        <button mat-stroked-button color="primary" (click)="openChangePasswordDialog()">Change Password</button>
+    </div>
+</div>
+
+<ng-template #changePasswordDialog>
+    <div class="dialog-wrapper">
+        <h5 mat-dialog-title>Change Password</h5>
+
+        <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()" class="dialog-form">
+            <!-- Old Password -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Old Password</mat-label>
+                <input matInput [type]="hideOld ? 'password' : 'text'" formControlName="oldPassword" />
+                <button type="button" mat-icon-button matSuffix (click)="hideOld = !hideOld">
+                    <mat-icon>{{ hideOld ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="changePasswordForm.get('oldPassword')?.hasError('required')">
+                    Old password is required
+                </mat-error>
+            </mat-form-field>
+
+            <!-- New Password -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>New Password</mat-label>
+                <input matInput [type]="hideNew ? 'password' : 'text'" formControlName="newPassword" />
+                <button type="button" mat-icon-button matSuffix (click)="hideNew = !hideNew">
+                    <mat-icon>{{ hideNew ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="changePasswordForm.get('newPassword')?.hasError('required')">
+                    New password is required
+                </mat-error>
+                <mat-error *ngIf="changePasswordForm.get('newPassword')?.hasError('minlength')">
+                    Minimum 6 characters required
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Confirm Password -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput [type]="hideConfirm ? 'password' : 'text'" formControlName="confirmPassword" />
+                <button type="button" mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm">
+                    <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="changePasswordForm.get('confirmPassword')?.hasError('required')">
+                    Confirm password is required
+                </mat-error>
+                <mat-error *ngIf="changePasswordForm.hasError('passwordMismatch')">
+                    Passwords do not match
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Actions -->
+            <div class="dialog-actions">
+                <button mat-stroked-button color="warn" type="button" (click)="closeDialog()">
+                    Cancel
+                </button>
+                <button mat-flat-button color="primary" type="submit" [disabled]="changePasswordForm.invalid">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>

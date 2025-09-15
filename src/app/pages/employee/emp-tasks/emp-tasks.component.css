@@ -151,6 +151,43 @@
   background-color: #ccc;
   cursor: not-allowed;
 }
+/* Dialog content */
+.submit-dialog {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* Message text */
+.submit-dialog p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+/* Actions row */
+.submit-dialog-actions {
+  display: flex;
+  justify-content: space-between; /* align buttons to right */
+  gap: 12px;
+}
+
+/* Buttons */
+.submit-dialog-actions button {
+  min-width: 90px;
+  font-weight: 500;
+  text-transform: none; /* keep normal case */
+}
+
+.submit-dialog-actions button[color="primary"] {
+  background-color: #28a745 ;
+  color: #fff;
+}
+
+.submit-dialog-actions button[color="primary"]:hover {
+  background-color: #28a745 ;
+}
 
 /* ---------- Breakpoints ---------- */
 @media (max-width: 768px) {

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ViewChild,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,6 +23,11 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogModule,
+} from '@angular/material/dialog';
 
 interface Task {
   id: number;
@@ -44,6 +55,7 @@ interface Task {
     MatIcon,
     MatPaginatorModule,
     MatSortModule,
+    MatDialogModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
@@ -55,6 +67,10 @@ interface Task {
 export class EmpTasksComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  //
+  @ViewChild('submitDialog') submitDialogTemplate!: TemplateRef<any>;
+  dialogRef!: MatDialogRef<any>;
 
   isMobile: boolean = false;
   filtersOpen: boolean = false;
@@ -198,6 +214,8 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     'submit',
   ];
 
+  constructor(private dialog: MatDialog) {}
+
   dataSource = new MatTableDataSource<Task>(this.tasks);
 
   ngOnInit(): void {
@@ -245,5 +263,17 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     if (!this.isMobile) {
       this.filtersOpen = true; // always open on desktop
     }
+  }
+
+  openSubmitDialog() {
+    this.dialogRef = this.dialog.open(this.submitDialogTemplate, {
+      width: '500px',
+      disableClose: true,
+      autoFocus: true,
+    });
+  }
+
+  closeSubmitDialog() {
+    this.dialogRef.close();
   }
 }

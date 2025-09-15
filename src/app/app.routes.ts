@@ -7,6 +7,8 @@ import { EmployeeComponent } from './pages/admin/employee/employee.component';
 import { EmpHomeComponent } from './pages/employee/emp-home/emp-home.component';
 import { EmpTasksComponent } from './pages/employee/emp-tasks/emp-tasks.component';
 import { EmpComponent } from './pages/employee/emp/emp.component';
+import { LoginComponent } from './pages/login/login.component';
+import { EmpProfileComponent } from './pages/employee/emp-profile/emp-profile.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +28,8 @@ export const routes: Routes = [
     children: [
       { path: '', component: EmpHomeComponent },
       { path: 'tasks', component: EmpTasksComponent },
+      { path: 'profile', component: EmpProfileComponent },
     ],
   },
+  { path: 'login', component: LoginComponent },
 ];

@@ -28,6 +28,7 @@ import {
   MatDialogRef,
   MatDialogModule,
 } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 
 interface Task {
   id: number;
@@ -43,6 +44,7 @@ interface Task {
   standalone: true,
   imports: [
     FormsModule,
+    RouterModule,
     CommonModule,
     MatTableModule,
     MatFormFieldModule,
@@ -67,10 +69,6 @@ interface Task {
 export class EmpTasksComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  //
-  @ViewChild('submitDialog') submitDialogTemplate!: TemplateRef<any>;
-  dialogRef!: MatDialogRef<any>;
 
   isMobile: boolean = false;
   filtersOpen: boolean = false;
@@ -211,10 +209,9 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     'submissionDate',
     'status',
     'view',
-    'submit',
   ];
 
-  constructor(private dialog: MatDialog) {}
+  constructor() {}
 
   dataSource = new MatTableDataSource<Task>(this.tasks);
 
@@ -265,15 +262,4 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openSubmitDialog() {
-    this.dialogRef = this.dialog.open(this.submitDialogTemplate, {
-      width: '500px',
-      disableClose: true,
-      autoFocus: true,
-    });
-  }
-
-  closeSubmitDialog() {
-    this.dialogRef.close();
-  }
 }

@@ -10,6 +10,7 @@ import { EmpComponent } from './pages/employee/emp/emp.component';
 import { LoginComponent } from './pages/login/login.component';
 import { EmpProfileComponent } from './pages/employee/emp-profile/emp-profile.component';
 import { EmpTaskViewComponent } from './pages/employee/emp-task-view/emp-task-view.component';
+import { AdminTaskViewComponent } from './pages/admin/admin-task-view/admin-task-view.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,7 @@ export const routes: Routes = [
       { path: 'assign-task', component: AssignTaskComponent },
       { path: 'tasks', component: TasksComponent },
       { path: 'employee', component: EmployeeComponent },
+      { path: 'task', component: AdminTaskViewComponent },
     ],
   },
   {
@@ -30,7 +32,7 @@ export const routes: Routes = [
       { path: '', component: EmpHomeComponent },
       { path: 'tasks', component: EmpTasksComponent },
       { path: 'profile', component: EmpProfileComponent },
-      {path: 'task', component: EmpTaskViewComponent}
+      { path: 'task', component: EmpTaskViewComponent },
     ],
   },
   { path: 'login', component: LoginComponent },

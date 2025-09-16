@@ -17,6 +17,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { RouterModule } from '@angular/router';
 
 interface Task {
   id: number;
@@ -34,6 +35,7 @@ interface Task {
   imports: [
     FormsModule,
     CommonModule,
+    RouterModule,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,

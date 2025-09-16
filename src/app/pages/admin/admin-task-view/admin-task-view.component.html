@@ -1,0 +1,94 @@
+<div class="task-view-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <button mat-icon-button class="back-btn" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="status-pill" [ngClass]="{
+        'pill-pending': task.status === 'Pending',
+        'pill-completed': task.status === 'Completed',
+        'pill-late': task.status === 'Late'
+      }">{{ task.status }}</span>
+    </div>
+
+    <!-- Description -->
+    <div class="description">
+        <p>{{ task.task }}</p>
+    </div>
+
+    <!-- Description -->
+    <div class="description">
+        <p>{{ task.description }}</p>
+    </div>
+
+    <!-- Dates -->
+    <div class="details">
+        <div class="detail-row">
+            <span class="label">Assigned Date:</span>
+            <span class="value">{{ task.assignedDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="label">Target Date:</span>
+            <span class="value">{{ task.targetDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail-row" *ngIf="task.submissionDate">
+            <span class="label">Submission Date:</span>
+            <span class="value">{{ task.submissionDate | date:'mediumDate' }}</span>
+        </div>
+    </div>
+
+    <!-- Delete Button -->
+    <div class="actions">
+         <button mat-raised-button color="primary" (click)="openEditTaskDialog()">
+            Edit Task
+        </button>
+        <button mat-raised-button color="warn" class="btn-delete" (click)="openDeleteDialog()">
+            Delete Task
+        </button>
+    </div>
+</div>
+
+
+<ng-template #deleteDialog>
+    <div class="delete-dialog">
+        <p>Do you want to delete the Task ??</p>
+        <div class="delete-dialog-actions">
+            <button mat-stroked-button color="warn" (click)="closeDeleteDialog()">No</button>
+            <button mat-flat-button color="primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #editTaskDialog>
+    <form [formGroup]="editTaskForm" class="task-form">
+        <h3>Edit Task</h3>
+
+        <!-- Task -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Task</mat-label>
+            <textarea matInput rows="3" formControlName="task"></textarea>
+            <mat-error *ngIf="editTaskForm.get('task')?.hasError('required')">
+                Task is required
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Target Date -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Target Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="targetDate" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="editTaskForm.get('targetDate')?.hasError('required')">
+                Target Date is required
+            </mat-error>
+        </mat-form-field>
+
+        <div class="dialog-actions">
+            <button mat-stroked-button color="warn" (click)="closeEditTaskDialog()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="updateTask()" [disabled]="editTaskForm.invalid">
+                Update
+            </button>
+        </div>
+    </form>
+</ng-template>

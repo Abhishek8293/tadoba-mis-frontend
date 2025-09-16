@@ -1,0 +1,187 @@
+.task-view-wrapper {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  height: 50px;
+}
+
+.task-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+  color: #222;
+}
+
+.back-btn {
+  margin-right: auto;
+}
+
+.status-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.pill-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.pill-completed {
+  background: #d4edda;
+  color: #155724;
+}
+.pill-late {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Description */
+.description {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Details */
+.details {
+  margin-bottom: 20px;
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+.detail-row:last-child {
+  border-bottom: none;
+}
+.label {
+  font-weight: 500;
+  color: #555;
+}
+.value {
+  color: #222;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+.btn-delete {
+  background-color: #bf1b1b !important;
+  color: #fff !important;
+  padding: 12px 24px;
+  font-size: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Dialog content */
+.delete-dialog {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* Message text */
+.delete-dialog p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+/* Actions row */
+.delete-dialog-actions {
+  display: flex;
+  justify-content: space-between; /* align buttons to right */
+  gap: 12px;
+}
+
+/* Buttons */
+.delete-dialog-actions button {
+  min-width: 90px;
+  font-weight: 500;
+  text-transform: none; /* keep normal case */
+}
+
+.delete-dialog-actions button[color="primary"] {
+  background-color: #28a745 ;
+  color: #fff;
+}
+
+.delete-dialog-actions button[color="primary"]:hover {
+  background-color: #28a745 ;
+}
+.task-form {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-form h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #4b4f94;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.task-form .mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Mobile Friendly */
+@media (max-width: 600px) {
+  .task-view-wrapper {
+    margin: 16px;
+    padding: 16px;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .task-title {
+    text-align: left;
+    font-size: 16px;
+  }
+  .status-pill {
+    align-self: flex-end;
+    margin-top: 6px;
+  }
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

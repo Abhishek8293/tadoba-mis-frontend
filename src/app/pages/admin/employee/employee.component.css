@@ -86,24 +86,112 @@
 
 .employee-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   margin-bottom: 6px;
 }
-
+.employee-header h6 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  color: #222;
+}
 .dept-label {
+  display: inline-block;
   background: #f0f0f5;
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: 5px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .employee-actions {
   display: flex;
+  justify-content: flex-end;
   gap: 6px;
   margin-top: 6px;
 }
+
+/* Dialog content */
+.delete-dialog {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.delete-dialog p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.delete-dialog-actions {
+  display: flex;
+  justify-content: space-between; /* align buttons to right */
+  gap: 12px;
+}
+
+.delete-dialog-actions button {
+  min-width: 90px;
+  font-weight: 500;
+  text-transform: none; /* keep normal case */
+}
+
+.delete-dialog-actions button[color="primary"] {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.delete-dialog-actions button[color="primary"]:hover {
+  background-color: #28a745;
+}
+
+/* Dialog Form Wrapper */
+.employee-form {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  padding: 16px;
+}
+
+.employee-form h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #444b94;  
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* Form Fields */
+.employee-form mat-form-field {
+  width: 100% !important;
+  margin-bottom: 12px;
+}
+
+/* Dialog Actions */
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.dialog-actions button {
+  min-width: 90px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.dialog-actions button[color="primary"] {
+  background-color: #444b94;
+  color: #fff;
+}
+
+.dialog-actions button[color="primary"]:hover {
+  background-color: #3a3e7a;
+}
+
 
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
@@ -112,5 +200,10 @@
   }
   .cards-section {
     display: block;
+  }
+  .right-filter {
+    display: flex;
+    align-items:flex-start;
+    flex-direction: column;
   }
 }

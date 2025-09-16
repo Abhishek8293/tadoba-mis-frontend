@@ -9,6 +9,7 @@ import { EmpTasksComponent } from './pages/employee/emp-tasks/emp-tasks.componen
 import { EmpComponent } from './pages/employee/emp/emp.component';
 import { LoginComponent } from './pages/login/login.component';
 import { EmpProfileComponent } from './pages/employee/emp-profile/emp-profile.component';
+import { EmpTaskViewComponent } from './pages/employee/emp-task-view/emp-task-view.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,7 @@ export const routes: Routes = [
       { path: '', component: EmpHomeComponent },
       { path: 'tasks', component: EmpTasksComponent },
       { path: 'profile', component: EmpProfileComponent },
+      {path: 'task', component: EmpTaskViewComponent}
     ],
   },
   { path: 'login', component: LoginComponent },

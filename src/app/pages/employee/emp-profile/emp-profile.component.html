@@ -23,7 +23,7 @@
 
 <ng-template #changePasswordDialog>
     <div class="dialog-wrapper">
-        <h5 mat-dialog-title>Change Password</h5>
+        <!-- <h5 mat-dialog-title>Change Password</h5> -->
 
         <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()" class="dialog-form">
             <!-- Old Password -->
@@ -55,7 +55,7 @@
 
             <!-- Confirm Password -->
             <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Confirm Password</mat-label>
+                <mat-label>Confirm New Password</mat-label>
                 <input matInput [type]="hideConfirm ? 'password' : 'text'" formControlName="confirmPassword" />
                 <button type="button" mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm">
                     <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>

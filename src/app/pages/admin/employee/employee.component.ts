@@ -13,27 +13,39 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { FormsModule } from '@angular/forms';
 import {
   MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { A11yModule } from '@angular/cdk/a11y';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { of, map, catchError } from 'rxjs';
 
-interface Employee {
-  id: number;
-  name: string;
-  department: string;
-  mail: string;
-}
+import { EmployeeService } from '../../../services/employee.service';
+import { DepartmentService } from '../../../services/department.service';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { DepartmentDTO } from '../../../models/department.model';
+import { ApiResponse } from '../../../utils/apiresponse';
+import {
+  EmployeeResponseDTO,
+  EmployeeRequestDTO,
+} from '../../../models/employee.model';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import {
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { CUSTOM_DATE_FORMATS } from '../../../utils/date-formats';
+import moment from 'moment';
 
 @Component({
   selector: 'app-employee',
@@ -41,120 +53,81 @@ interface Employee {
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
-    A11yModule,
-    FormsModule,
-    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
 })
 export class EmployeeComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = [
+    'srNo',
+    'name',
+    'email',
+    'dob',
+    'responsibilities',
+    'department',
+    'action',
+  ];
+  dataSource = new MatTableDataSource<EmployeeResponseDTO>([]);
+
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  //
+  // Dialog refs
   @ViewChild('deleteDialog') deleteDialogTemplate!: TemplateRef<any>;
   @ViewChild('addEmployeeDialog') addEmployeeDialogTemplate!: TemplateRef<any>;
   @ViewChild('editEmployeeDialog')
   editEmployeeDialogTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  //form
+  // Forms
   addEmployeeForm!: FormGroup;
   editEmployeeForm!: FormGroup;
 
-  // Filter
-  selectedDepartment: string = '';
+  selectedDepartment: number | null = null;
 
-  // Sample departments
-  departments: string[] = ['HR', 'Finance', 'IT', 'Marketing', 'Operations'];
+  // Dropdown departments
+  departments: DepartmentDTO[] = [];
 
-  // Sample employee data
-  employees: Employee[] = [
-    {
-      id: 1,
-      name: 'Rahul Sharma',
-      department: 'IT',
-      mail: 'sharma.rahul@gmail.com',
-    },
-    {
-      id: 2,
-      name: 'Priya Verma',
-      department: 'HR',
-      mail: 'piyesh123@gmail.com',
-    },
-    {
-      id: 3,
-      name: 'Amit Patel',
-      department: 'Finance',
-      mail: 'patel24@gmail.com',
-    },
-    {
-      id: 4,
-      name: 'Neha Singh',
-      department: 'IT',
-      mail: 'singh.neha@gmail.com',
-    },
-    {
-      id: 5,
-      name: 'Rohan Mehta',
-      department: 'Marketing',
-      mail: 'mehta.rohan@gmail.com',
-    },
-    {
-      id: 6,
-      name: 'Kavya Iyer',
-      department: 'Operations',
-      mail: 'abc@gmail.com',
-    },
-    {
-      id: 7,
-      name: 'Arjun Reddy',
-      department: 'Finance',
-      mail: 'abc@gmail.com',
-    },
-    { id: 8, name: 'Sneha Nair', department: 'HR', mail: 'abc@gmail.com' },
-  ];
+  selectedEmpId: number | null = null;
 
-  displayedColumns: string[] = ['srNo', 'name', 'mail', 'department', 'action'];
-
-  constructor(private dialog: MatDialog, private fb: FormBuilder) {
-    this.addEmployeeForm = this.fb.group({
-      name: ['', Validators.required],
-      mail: ['', [Validators.required, Validators.email]],
-      department: ['', Validators.required],
-    });
-
-    this.editEmployeeForm = this.fb.group({
-      id: [0],
-      name: ['', Validators.required],
-      mail: ['', [Validators.required, Validators.email]],
-      department: ['', Validators.required],
-    });
-
-    this.dataSource.filterPredicate = (employee: Employee, filter: string) => {
-      return (
-        !filter || employee.department.toLowerCase() === filter.toLowerCase()
-      );
-    };
-  }
-
-  dataSource = new MatTableDataSource<Employee>(this.employees);
+  constructor(
+    private employeeService: EmployeeService,
+    private departmentService: DepartmentService,
+    private snackbar: SnackbarService,
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.dataSource.filterPredicate = (employee: Employee, filter: string) => {
-      return (
-        !filter || employee.department.toLowerCase() === filter.toLowerCase()
-      );
+    this.initForms();
+    this.loadEmployees();
+    this.loadDepartments();
+
+    // Custom filter for department
+    this.dataSource.filterPredicate = (
+      emp: EmployeeResponseDTO,
+      filter: string
+    ): boolean => {
+      if (!filter) return true;
+      const f = JSON.parse(filter) as { departmentId?: number };
+      return !f.departmentId || emp.departmentId === f.departmentId;
     };
   }
 
@@ -163,73 +136,181 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  applyFilter() {
-    this.dataSource.filter = this.selectedDepartment;
+  private initForms(): void {
+    this.addEmployeeForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      departmentId: ['', Validators.required],
+      dob: ['', Validators.required],
+      responsibilities: [''],
+    });
+
+    this.editEmployeeForm = this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      departmentId: ['', Validators.required],
+      dob: ['', Validators.required], 
+      responsibilities: [''],
+    });
   }
 
-  resetFilter() {
-    this.selectedDepartment = '';
-    this.applyFilter();
+  loadEmployees(): void {
+    this.employeeService
+      .getAllEmployees()
+      .pipe(
+        map((res: ApiResponse<EmployeeResponseDTO[]>) => res.data),
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load employees');
+          return of([]);
+        })
+      )
+      .subscribe((data) => {
+        this.dataSource.data = data;
+      });
+  }
+
+  loadDepartments(): void {
+    this.departmentService
+      .getAllDepartments()
+      .pipe(
+        map((res: ApiResponse<DepartmentDTO[]>) => res.data),
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load departments');
+          return of([]);
+        })
+      )
+      .subscribe((data) => {
+        this.departments = data;
+      });
   }
 
   get totalEmployees(): number {
     return this.dataSource.filteredData.length;
   }
 
-  openDeleteDialog() {
-    this.dialogRef = this.dialog.open(this.deleteDialogTemplate, {
-      width: '500px',
-      disableClose: true,
-      autoFocus: true,
-    });
-  }
-
-  closeDeleteDialog() {
-    this.dialogRef.close();
-  }
-
-  openAddEmployeeDialog() {
+ 
+  openAddEmployeeDialog(): void {
     this.addEmployeeForm.reset();
     this.dialogRef = this.dialog.open(this.addEmployeeDialogTemplate, {
       width: '500px',
       disableClose: true,
-      autoFocus: true,
     });
   }
-  closeAddEmployeeDialog() {
-    this.dialogRef.close();
-  }
-  saveNewEmployee() {
+
+  saveNewEmployee(): void {
     if (this.addEmployeeForm.valid) {
-      const newEmp: Employee = {
-        id: this.employees.length + 1,
-        ...this.addEmployeeForm.value,
+      const formValue = this.addEmployeeForm.value;
+
+      const dto: EmployeeRequestDTO = {
+        name: formValue.name,
+        email: formValue.email,
+        password: 'default123',
+        departmentId: formValue.departmentId,
+        dob: moment(formValue.dob).format('YYYY-MM-DD'),
+        responsibilities: formValue.responsibilities || '',
       };
-      this.employees.push(newEmp);
-      this.dataSource.data = [...this.employees];
-      this.closeAddEmployeeDialog();
+
+      this.employeeService
+        .createEmployee(dto)
+        .pipe(
+          catchError(() => {
+            this.snackbar.openFailedSnackBar('Failed to create employee');
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res && res.success) {
+            this.snackbar.openSuccessSnackBar('Employee created successfully');
+            this.loadEmployees();
+            this.closeDialog();
+          }
+        });
     }
   }
 
-  // open Edit
-  openEditEmployeeDialog() {
-    // this.editEmployeeForm.patchValue(emp);
+ 
+  openEditEmployeeDialog(emp: EmployeeResponseDTO): void {
+    this.selectedEmpId = emp.id;
+    this.editEmployeeForm.patchValue({
+      id: emp.id,
+      name: emp.name,
+      email: emp.email,
+      departmentId: emp.departmentId,
+      dob: emp.dob ? moment(emp.dob, 'YYYY-MM-DD').toDate() : null, 
+      responsibilities: emp.responsibilities,
+    });
     this.dialogRef = this.dialog.open(this.editEmployeeDialogTemplate, {
       width: '500px',
       disableClose: true,
-      autoFocus: true,
     });
   }
-  closeEditEmployeeDialog() {
+
+  updateEmployee(): void {
+    if (this.editEmployeeForm.valid && this.selectedEmpId !== null) {
+      const formValue = this.editEmployeeForm.value;
+
+      const dto: EmployeeRequestDTO = {
+        ...formValue,
+        dob: formValue.dob
+          ? moment(formValue.dob).format('YYYY-MM-DD')
+          : null, 
+      };
+
+      this.employeeService
+        .updateEmployee(this.selectedEmpId, dto)
+        .pipe(
+          catchError(() => {
+            this.snackbar.openFailedSnackBar('Failed to update employee');
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res && res.success) {
+            this.snackbar.openSuccessSnackBar('Employee updated successfully');
+            this.loadEmployees();
+            this.closeDialog();
+          }
+        });
+    }
+  }
+
+  
+  openDeleteDialog(id: number): void {
+    this.selectedEmpId = id;
+    this.dialogRef = this.dialog.open(this.deleteDialogTemplate, {
+      width: '400px',
+      disableClose: true,
+    });
+  }
+
+  confirmDelete(): void {
+    if (this.selectedEmpId !== null) {
+      this.employeeService
+        .deleteEmployee(this.selectedEmpId)
+        .pipe(
+          catchError(() => {
+            this.snackbar.openFailedSnackBar('Failed to delete employee');
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res && res.success) {
+            this.snackbar.openSuccessSnackBar('Employee deleted successfully');
+            this.loadEmployees();
+            this.closeDialog();
+          }
+        });
+    }
+  }
+
+  
+  closeDialog(): void {
     this.dialogRef.close();
   }
-  updateEmployee() {
-    if (this.editEmployeeForm.valid) {
-      const updated = this.editEmployeeForm.value;
-      const index = this.employees.findIndex((e) => e.id === updated.id);
-      if (index > -1) this.employees[index] = updated;
-      this.dataSource.data = [...this.employees];
-      this.closeEditEmployeeDialog();
-    }
+
+  applyFilter(): void {
+    const filterObj = { departmentId: this.selectedDepartment || null };
+    this.dataSource.filter = JSON.stringify(filterObj);
   }
 }

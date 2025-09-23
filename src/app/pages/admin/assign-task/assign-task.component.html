@@ -1,35 +1,62 @@
 <div class="container">
-    <h2 class="page-title">📋 Assign New Task</h2>
+    <div class="card">
+        <h2 class="page-title">📋 Assign New Task</h2>
 
-    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form"
+            (keydown.enter)="$event.preventDefault()">
+            <!-- Employee Select -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Select Employee</mat-label>
+                <mat-select formControlName="employeeId">
+                    <mat-option *ngFor="let emp of employees" [value]="emp.id">
+                        {{ emp.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="taskForm.get('employeeId')?.hasError('required')">
+                    Employee is required
+                </mat-error>
+            </mat-form-field>
 
-        <!-- Employee Select -->
-        <mat-form-field appearance="outline">
-            <mat-label>Select Employee</mat-label>
-            <mat-select formControlName="employee">
-                @for (emp of employees; track emp) {
-                <mat-option [value]="emp">{{ emp }}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
+            <!-- Target Date -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Target Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="targetDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="taskForm.get('targetDate')?.hasError('required')">
+                    Target Date is required
+                </mat-error>
+            </mat-form-field>
 
-        <!-- Target Date -->
-        <mat-form-field appearance="outline">
-            <mat-label>Target Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="targetDate">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            <!-- Task Title -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Task Title</mat-label>
+                <input matInput formControlName="task" />
+                <mat-error *ngIf="taskForm.get('task')?.hasError('required')">
+                    Task Title is required
+                </mat-error>
+                <mat-error *ngIf="taskForm.get('task')?.hasError('minlength')">
+                    Task Title must be at least 5 characters
+                </mat-error>
+            </mat-form-field>
 
-        <!-- Task Description -->
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Task Description</mat-label>
-            <textarea matInput rows="4" formControlName="task"></textarea>
-        </mat-form-field>
+            <!-- Description -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput rows="4" formControlName="description"></textarea>
+                <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
+                    Description is required
+                </mat-error>
+            </mat-form-field>
 
-        <!-- Submit Button -->
-        <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="taskForm.invalid">
-            <mat-icon>add</mat-icon>Assign Task
-        </button>
-    </form>
+            <!-- Submit Button -->
+            <div class="actions">
+                <button mat-raised-button color="primary" type="submit" class="submit-btn"
+                    [disabled]="taskForm.invalid">
+                    <mat-icon>add</mat-icon>
+                    Assign Task
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

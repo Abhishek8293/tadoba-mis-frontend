@@ -18,6 +18,25 @@
   flex-wrap: wrap;
   height: 50px;
 }
+.employee-name {
+  margin-bottom: 16px;
+  font-size: 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.emp-icon {
+  font-size: 20px;
+  color: #4b4f94; /* matches your form heading color */
+}
+.employee-name .value {
+  font-weight: 500;
+  color: #222;
+}
 
 .task-title {
   flex: 1;
@@ -43,14 +62,33 @@
 .pill-pending {
   background: #fff3cd;
   color: #856404;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
+
 .pill-completed {
   background: #d4edda;
   color: #155724;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
+
 .pill-late {
   background: #f8d7da;
   color: #721c24;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.pill-overdue {
+  background: #f5c6cb;
+  color: #a71d2a;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
 
 /* Description */
@@ -58,6 +96,7 @@
   margin-bottom: 16px;
   font-size: 14px;
   color: #444;
+  border-bottom: 1px solid #eee;
 }
 
 /* Details */
@@ -68,7 +107,6 @@
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
 }
 .detail-row:last-child {
   border-bottom: none;
@@ -125,12 +163,12 @@
 }
 
 .delete-dialog-actions button[color="primary"] {
-  background-color: #28a745 ;
+  background-color: #28a745;
   color: #fff;
 }
 
 .delete-dialog-actions button[color="primary"]:hover {
-  background-color: #28a745 ;
+  background-color: #28a745;
 }
 .task-form {
   font-family: "Roboto", "Helvetica", sans-serif;

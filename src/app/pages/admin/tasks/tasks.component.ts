@@ -14,20 +14,18 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_DATE_FORMATS } from '../../../utils/date-formats';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { RouterModule } from '@angular/router';
-
-interface Task {
-  id: number;
-  name: string;
-  task: string;
-  assignedDate: Date;
-  targetDate: Date;
-  submissionDate: Date | null;
-  status: 'Pending' | 'Completed' | 'Late';
-}
+import { TaskService } from '../../../services/task.service';
+import { EmployeeService } from '../../../services/employee.service';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { TaskResponseDTO } from '../../../models/task.model';
+import { EmployeeResponseDTO } from '../../../models/employee.model';
+import { catchError, map, of } from 'rxjs';
+import { ApiResponse } from '../../../utils/apiresponse';
+import moment from 'moment';
 
 @Component({
   selector: 'app-tasks',
@@ -44,7 +42,7 @@ interface Task {
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
-    MatIcon,
+    MatIconModule,
     MatPaginatorModule,
     MatSortModule,
   ],
@@ -64,167 +62,10 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
   // Filters
   selectedStatus: string = '';
-  selectedEmployee: string = '';
+  selectedEmployee: number | null = null;
   selectedDate: Date | null = null;
 
-  // Sample employee list (15 Indian names)
-  employees: string[] = [
-    'Rahul Sharma',
-    'Priya Verma',
-    'Amit Patel',
-    'Neha Singh',
-    'Rohan Mehta',
-    'Kavya Iyer',
-    'Arjun Reddy',
-    'Sanya Malhotra',
-    'Vikram Desai',
-    'Ananya Gupta',
-    'Manish Kumar',
-    'Sneha Nair',
-    'Harshad Joshi',
-    'Pooja Bansal',
-    'Devansh Chawla',
-  ];
-
-  // Sample data (15 tasks)
-  tasks: Task[] = [
-    {
-      id: 1,
-      name: 'Rahul Sharma',
-      task: 'Prepare Financial Report',
-      assignedDate: new Date('2025-08-30'),
-      targetDate: new Date('2025-09-05'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-    {
-      id: 2,
-      name: 'Priya Verma',
-      task: 'Client Meeting',
-      assignedDate: new Date('2025-08-28'),
-      targetDate: new Date('2025-09-03'),
-      submissionDate: new Date('2025-09-03'),
-      status: 'Completed',
-    },
-    {
-      id: 3,
-      name: 'Amit Patel',
-      task: 'Submit Invoice',
-      assignedDate: new Date('2025-08-27'),
-      targetDate: new Date('2025-09-01'),
-      submissionDate: new Date('2025-09-04'),
-      status: 'Late',
-    },
-    {
-      id: 4,
-      name: 'Neha Singh',
-      task: 'Update Presentation',
-      assignedDate: new Date('2025-08-31'),
-      targetDate: new Date('2025-09-07'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-    {
-      id: 5,
-      name: 'Rohan Mehta',
-      task: 'Audit Documents',
-      assignedDate: new Date('2025-08-29'),
-      targetDate: new Date('2025-09-04'),
-      submissionDate: new Date('2025-09-04'),
-      status: 'Completed',
-    },
-    {
-      id: 6,
-      name: 'Kavya Iyer',
-      task: 'Draft Proposal',
-      assignedDate: new Date('2025-09-01'),
-      targetDate: new Date('2025-09-09'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-    {
-      id: 7,
-      name: 'Arjun Reddy',
-      task: 'Prepare Training Plan',
-      assignedDate: new Date('2025-08-30'),
-      targetDate: new Date('2025-09-06'),
-      submissionDate: new Date('2025-09-06'),
-      status: 'Completed',
-    },
-    {
-      id: 8,
-      name: 'Sanya Malhotra',
-      task: 'Organize Workshop',
-      assignedDate: new Date('2025-09-01'),
-      targetDate: new Date('2025-09-08'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-    {
-      id: 9,
-      name: 'Vikram Desai',
-      task: 'Follow-up with Vendor',
-      assignedDate: new Date('2025-08-27'),
-      targetDate: new Date('2025-09-02'),
-      submissionDate: new Date('2025-09-05'),
-      status: 'Late',
-    },
-    {
-      id: 10,
-      name: 'Ananya Gupta',
-      task: 'Design Brochure',
-      assignedDate: new Date('2025-09-02'),
-      targetDate: new Date('2025-09-10'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-    {
-      id: 11,
-      name: 'Manish Kumar',
-      task: 'Compile Survey Data',
-      assignedDate: new Date('2025-08-31'),
-      targetDate: new Date('2025-09-05'),
-      submissionDate: new Date('2025-09-05'),
-      status: 'Completed',
-    },
-    {
-      id: 12,
-      name: 'Sneha Nair',
-      task: 'HR Interview Scheduling',
-      assignedDate: new Date('2025-09-02'),
-      targetDate: new Date('2025-09-11'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-    {
-      id: 13,
-      name: 'Harshad Joshi',
-      task: 'Market Analysis Report',
-      assignedDate: new Date('2025-08-28'),
-      targetDate: new Date('2025-09-03'),
-      submissionDate: new Date('2025-09-03'),
-      status: 'Completed',
-    },
-    {
-      id: 14,
-      name: 'Pooja Bansal',
-      task: 'Inventory Check',
-      assignedDate: new Date('2025-08-27'),
-      targetDate: new Date('2025-09-01'),
-      submissionDate: new Date('2025-09-02'),
-      status: 'Late',
-    },
-    {
-      id: 15,
-      name: 'Devansh Chawla',
-      task: 'Prepare Newsletter',
-      assignedDate: new Date('2025-09-04'),
-      targetDate: new Date('2025-09-12'),
-      submissionDate: null,
-      status: 'Pending',
-    },
-  ];
-
+  employees: EmployeeResponseDTO[] = [];
   displayedColumns: string[] = [
     'srNo',
     'name',
@@ -235,29 +76,17 @@ export class TasksComponent implements OnInit, AfterViewInit {
     'status',
     'action',
   ];
+  dataSource = new MatTableDataSource<TaskResponseDTO>([]);
 
-  dataSource = new MatTableDataSource<Task>(this.tasks);
+  constructor(
+    private taskService: TaskService,
+    private employeeService: EmployeeService,
+    private snackbar: SnackbarService
+  ) {}
 
   ngOnInit(): void {
-    // Custom filter logic
-    this.dataSource.filterPredicate = (task: Task, filter: string) => {
-      const f = JSON.parse(filter);
-
-      const matchesStatus =
-        !f.status || task.status.toLowerCase() === f.status.toLowerCase();
-
-      const matchesEmployee =
-        !f.employee || task.name.toLowerCase() === f.employee.toLowerCase();
-
-      const matchesDate =
-        !f.date ||
-        new Date(task.targetDate).toDateString() ===
-          new Date(f.date).toDateString();
-
-      return matchesStatus && matchesEmployee && matchesDate;
-    };
-
-    //
+    this.loadEmployees();
+    this.loadTasks();
     this.checkIfMobile();
     window.addEventListener('resize', () => this.checkIfMobile());
   }
@@ -267,18 +96,53 @@ export class TasksComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  applyFilters() {
-    const filterObj = {
-      status: this.selectedStatus,
-      employee: this.selectedEmployee,
-      date: this.selectedDate,
-    };
-    this.dataSource.filter = JSON.stringify(filterObj);
+  loadEmployees(): void {
+    this.employeeService
+      .getAllEmployees()
+      .pipe(
+        map((res: ApiResponse<EmployeeResponseDTO[]>) => res.data),
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load employees');
+          return of([]);
+        })
+      )
+      .subscribe((data) => {
+        this.employees = data;
+      });
   }
 
-  resetFilters() {
+  loadTasks(): void {
+    let formattedDate: string | undefined = undefined;
+
+    if (this.selectedDate) {
+      formattedDate = moment(this.selectedDate).format('YYYY-MM-DD');
+    }
+
+    this.taskService
+      .getAllTasks(
+        this.selectedStatus || undefined,
+        this.selectedEmployee || undefined,
+        formattedDate
+      )
+      .pipe(
+        map((res: ApiResponse<TaskResponseDTO[]>) => res.data),
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load tasks');
+          return of([]);
+        })
+      )
+      .subscribe((tasks) => {
+        this.dataSource.data = tasks;
+      });
+  }
+
+  applyFilters(): void {
+    this.loadTasks();
+  }
+
+  resetFilters(): void {
     this.selectedStatus = '';
-    this.selectedEmployee = '';
+    this.selectedEmployee = null;
     this.selectedDate = null;
     this.applyFilters();
   }
@@ -286,7 +150,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
   checkIfMobile() {
     this.isMobile = window.innerWidth <= 768;
     if (!this.isMobile) {
-      this.filtersOpen = true; // always open on desktop
+      this.filtersOpen = true; 
     }
   }
 }

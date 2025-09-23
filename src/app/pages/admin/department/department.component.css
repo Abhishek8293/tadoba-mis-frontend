@@ -1,10 +1,10 @@
-.employee-wrapper {
+.department-wrapper {
   padding: 20px;
   font-family: "Roboto", "Helvetica", sans-serif;
   color: #222;
 }
 
-/* ---------- Filters ---------- */
+/* ---------- Filters/Header ---------- */
 .filters-section {
   display: flex;
   justify-content: space-between;
@@ -31,14 +31,7 @@
 .right-filter {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 12px;
-}
-.filter-field {
-  height: 55px;
-}
-.dept-filter {
-  min-width: 180px;
 }
 
 /* ---------- Table ---------- */
@@ -71,12 +64,12 @@
   background-color: #f5faff;
 }
 
-/* ---------- Card View ---------- */
+/* ---------- Card View (Mobile) ---------- */
 .cards-section {
   display: none;
 }
 
-.employee-card {
+.department-card {
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 12px;
@@ -84,44 +77,21 @@
   background: #fff;
 }
 
-.employee-header {
+.department-header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 6px;
 }
-.employee-header h6 {
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 2px;
-  color: #222;
-}
-.employee-header p {
-  border-top: 1px solid #eee;
-  padding-top: 5px;
-  font-size: 13px;
-}
-.dept-label {
-  display: inline-block;
-  background: #f0f0f5;
-  padding: 2px 8px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-}
 
-.employee-actions {
+.department-actions {
   display: flex;
   justify-content: flex-end;
   gap: 6px;
-  margin-top: 6px;
 }
 
-/* Dialog content */
+/* ---------- Dialogs ---------- */
 .delete-dialog {
-  font-family: "Roboto", "Helvetica", sans-serif;
   padding: 20px;
   text-align: center;
   color: #333;
@@ -130,19 +100,18 @@
 .delete-dialog p {
   font-size: 16px;
   margin-bottom: 30px;
-  color: #222;
 }
 
 .delete-dialog-actions {
   display: flex;
-  justify-content: space-between; /* align buttons to right */
+  justify-content: space-between;
   gap: 12px;
 }
 
 .delete-dialog-actions button {
   min-width: 90px;
   font-weight: 500;
-  text-transform: none; /* keep normal case */
+  text-transform: none;
 }
 
 .delete-dialog-actions button[color="primary"] {
@@ -150,31 +119,23 @@
   color: #fff;
 }
 
-.delete-dialog-actions button[color="primary"]:hover {
-  background-color: #28a745;
-}
-
-/* Dialog Form Wrapper */
-.employee-form {
-  font-family: "Roboto", "Helvetica", sans-serif;
+.department-form {
   padding: 16px;
 }
 
-.employee-form h3 {
+.department-form h3 {
   font-size: 18px;
   font-weight: 500;
-  color: #444b94;  
+  color: #444b94;
   text-align: center;
   margin-bottom: 16px;
 }
 
-/* Form Fields */
-.employee-form mat-form-field {
-  width: 100% !important;
+.department-form mat-form-field {
+  width: 100%;
   margin-bottom: 12px;
 }
 
-/* Dialog Actions */
 .dialog-actions {
   display: flex;
   justify-content: space-between;
@@ -193,11 +154,6 @@
   color: #fff;
 }
 
-.dialog-actions button[color="primary"]:hover {
-  background-color: #3a3e7a;
-}
-
-
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .table-section {
@@ -207,8 +163,7 @@
     display: block;
   }
   .right-filter {
-    display: flex;
-    align-items:flex-start;
     flex-direction: column;
+    align-items: flex-start;
   }
 }

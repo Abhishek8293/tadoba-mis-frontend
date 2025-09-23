@@ -6,17 +6,20 @@
         </div>
 
         <div class="right-filter">
+            <!-- Department Filter -->
             <div class="filter-field">
                 <mat-form-field appearance="outline" class="dept-filter">
                     <mat-label>Department</mat-label>
                     <mat-select [(ngModel)]="selectedDepartment" (selectionChange)="applyFilter()">
                         <mat-option value="">All</mat-option>
-                        <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept }}</mat-option>
+                        <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                            {{ dept.name }}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <button mat-button color="primary" (click)="openAddEmployeeDialog()">
-                <mat-icon>add</mat-icon> Add Emloyee
+                <mat-icon>add</mat-icon> Add Employee
             </button>
         </div>
     </div>
@@ -36,24 +39,40 @@
                 <td mat-cell *matCellDef="let emp">{{ emp.name }}</td>
             </ng-container>
 
-              <!-- Email -->
-            <ng-container matColumnDef="mail">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mail</th>
-                <td mat-cell *matCellDef="let emp">{{ emp.mail }}</td>
+            <!-- Email -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                <td mat-cell *matCellDef="let emp">{{ emp.email }}</td>
+            </ng-container>
+
+            <!-- DOB -->
+            <ng-container matColumnDef="dob">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
+                <td mat-cell *matCellDef="let emp">{{ emp.dob | date:'mediumDate' }}</td>
+            </ng-container>
+
+            <!-- Responsibilities -->
+            <ng-container matColumnDef="responsibilities">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsibilities</th>
+                <td mat-cell *matCellDef="let emp">{{ emp.responsibilities }}</td>
             </ng-container>
 
             <!-- Department -->
             <ng-container matColumnDef="department">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
-                <td mat-cell *matCellDef="let emp">{{ emp.department }}</td>
+                <td mat-cell *matCellDef="let emp">{{ emp.departmentName }}</td>
             </ng-container>
 
             <!-- Action -->
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let emp">
-                    <button mat-icon-button color="accent" (click)="openEditEmployeeDialog()"><mat-icon>edit</mat-icon></button>
-                    <button mat-icon-button color="warn" (click)="openDeleteDialog()"><mat-icon>delete</mat-icon></button>
+                    <button mat-icon-button color="accent" (click)="openEditEmployeeDialog(emp)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="openDeleteDialog(emp.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
                 </td>
             </ng-container>
 
@@ -71,34 +90,37 @@
         <div class="employee-card" *ngFor="let emp of dataSource.filteredData; let i = index">
             <div class="employee-header">
                 <b>{{ emp.name }}</b>
-                <h6>{{emp.mail}}</h6>
-                <span class="dept-label">{{ emp.department }}</span>
+                <h6>{{ emp.email }}</h6>
+                <h6>DOB: {{ emp.dob | date:'mediumDate' }}</h6>
+                <p>{{emp.responsibilities}}</p>
+                <span class="dept-label">{{ emp.departmentName }}</span>
             </div>
             <div class="employee-actions">
-                <button mat-icon-button color="accent" (click)="openEditEmployeeDialog()"><mat-icon>edit</mat-icon></button>
-                <button mat-icon-button color="warn" (click)="openDeleteDialog()"><mat-icon>delete</mat-icon></button>
+                <button mat-icon-button color="accent" (click)="openEditEmployeeDialog(emp)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="openDeleteDialog(emp.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Delete Confirmation Dialog -->
 <ng-template #deleteDialog>
-    <div class="delete-dialog">
-        <p>Do you want to delete the employee ??</p>
+    <div class="delete-dialog" (keydown.enter)="$event.preventDefault()">
+        <p>Do you want to delete this employee?</p>
         <div class="delete-dialog-actions">
-            <button mat-stroked-button color="warn" (click)="closeDeleteDialog()">No</button>
-            <button mat-flat-button color="primary">Yes</button>
+            <button mat-stroked-button color="warn" (click)="closeDialog()">No</button>
+            <button mat-flat-button color="primary" (click)="confirmDelete()">Yes</button>
         </div>
     </div>
 </ng-template>
 
-
-
-
 <!-- Add Employee Dialog -->
 <ng-template #addEmployeeDialog>
-    <form [formGroup]="addEmployeeForm" class="employee-form">
+    <form [formGroup]="addEmployeeForm" class="employee-form" (keydown.enter)="$event.preventDefault()">
         <h3>Add Employee</h3>
 
         <mat-form-field appearance="outline" class="full-width">
@@ -111,27 +133,42 @@
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="mail" />
-            <mat-error *ngIf="addEmployeeForm.get('mail')?.hasError('required')">
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="addEmployeeForm.get('email')?.hasError('required')">
                 Email is required
             </mat-error>
-            <mat-error *ngIf="addEmployeeForm.get('mail')?.hasError('email')">
+            <mat-error *ngIf="addEmployeeForm.get('email')?.hasError('email')">
                 Enter valid email
             </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Department</mat-label>
-            <mat-select formControlName="department">
-                <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept }}</mat-option>
+            <mat-select formControlName="departmentId">
+                <mat-option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</mat-option>
             </mat-select>
-            <mat-error *ngIf="addEmployeeForm.get('department')?.hasError('required')">
+            <mat-error *ngIf="addEmployeeForm.get('departmentId')?.hasError('required')">
                 Department is required
             </mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="dobPicker" formControlName="dob" />
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+            <mat-error *ngIf="addEmployeeForm.get('dob')?.hasError('required')">
+                Date of Birth is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Responsibilities</mat-label>
+            <textarea matInput formControlName="responsibilities"></textarea>
+        </mat-form-field>
+
         <div class="dialog-actions">
-            <button mat-stroked-button color="warn" (click)="closeAddEmployeeDialog()">Cancel</button>
+            <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
             <button mat-flat-button color="primary" (click)="saveNewEmployee()" [disabled]="addEmployeeForm.invalid">
                 Save
             </button>
@@ -141,7 +178,7 @@
 
 <!-- Edit Employee Dialog -->
 <ng-template #editEmployeeDialog>
-    <form [formGroup]="editEmployeeForm" class="employee-form">
+    <form [formGroup]="editEmployeeForm" class="employee-form" (keydown.enter)="$event.preventDefault()">
         <h3>Edit Employee Details</h3>
 
         <mat-form-field appearance="outline" class="full-width">
@@ -154,27 +191,42 @@
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="mail" />
-            <mat-error *ngIf="editEmployeeForm.get('mail')?.hasError('required')">
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="editEmployeeForm.get('email')?.hasError('required')">
                 Email is required
             </mat-error>
-            <mat-error *ngIf="editEmployeeForm.get('mail')?.hasError('email')">
+            <mat-error *ngIf="editEmployeeForm.get('email')?.hasError('email')">
                 Enter valid email
             </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Department</mat-label>
-            <mat-select formControlName="department">
-                <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept }}</mat-option>
+            <mat-select formControlName="departmentId">
+                <mat-option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</mat-option>
             </mat-select>
-            <mat-error *ngIf="editEmployeeForm.get('department')?.hasError('required')">
+            <mat-error *ngIf="editEmployeeForm.get('departmentId')?.hasError('required')">
                 Department is required
             </mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="dobPicker" formControlName="dob" />
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+            <mat-error *ngIf="editEmployeeForm.get('dob')?.hasError('required')">
+                Date of Birth is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Responsibilities</mat-label>
+            <textarea matInput formControlName="responsibilities"></textarea>
+        </mat-form-field>
+
         <div class="dialog-actions">
-            <button mat-stroked-button color="warn" (click)="closeEditEmployeeDialog()">Cancel</button>
+            <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
             <button mat-flat-button color="primary" (click)="updateEmployee()" [disabled]="editEmployeeForm.invalid">
                 Update
             </button>

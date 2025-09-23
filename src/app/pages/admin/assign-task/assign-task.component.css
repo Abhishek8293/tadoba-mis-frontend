@@ -1,9 +1,19 @@
+/* Outer container covers whole screen with spacing */
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 15px; /* spacing around screen */
+  min-height: 100vh;
+  background: #f5f6fa; /* subtle background for full page */
+}
+
+/* Inner card layout */
+.card {
   max-width: 650px;
-  margin: auto;
+  width: 100%;
   padding: 25px;
-  margin-top: 25px;
-  background: white; /* light grey-blue */
+  background: white;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
@@ -11,7 +21,7 @@
 .page-title {
   text-align: center;
   margin-bottom: 20px;
-  color: #373737; /* Material Green */
+  color: #373737;
   font-weight: 500;
   font-size: 20px;
   text-transform: uppercase;
@@ -49,7 +59,7 @@ mat-form-field {
 }
 
 .submit-btn:disabled {
-  background: #b0bec5 !important; 
+  background: #b0bec5 !important;
   color: #e0e0e0 !important;
   cursor: not-allowed;
   transform: none !important;
@@ -58,9 +68,13 @@ mat-form-field {
 /* Responsive */
 @media (max-width: 600px) {
   .container {
+    padding: 20px 10px;
+  }
+
+  .card {
     padding: 15px;
+    border-radius: 8px;
     box-shadow: none;
-    margin-top: 5px;
   }
 
   .page-title {

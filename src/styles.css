@@ -34,3 +34,17 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #4b4f94 #f1f1f1;
 }
+
+.success-snackbar {
+  --mdc-snackbar-container-color: #224f34 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-mdc-snack-bar-button-color: rgba(0, 0, 0, 0.2) !important;
+  white-space: pre-wrap;
+}
+
+.failed-snackbar {
+  --mdc-snackbar-container-color: #a82e2e !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-mdc-snack-bar-button-color: rgba(0, 0, 0, 0.2) !important;
+  white-space: pre-wrap;
+}

@@ -11,6 +11,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { EmpProfileComponent } from './pages/employee/emp-profile/emp-profile.component';
 import { EmpTaskViewComponent } from './pages/employee/emp-task-view/emp-task-view.component';
 import { AdminTaskViewComponent } from './pages/admin/admin-task-view/admin-task-view.component';
+import { DepartmentComponent } from './pages/admin/department/department.component';
 
 export const routes: Routes = [
   {
@@ -22,7 +23,8 @@ export const routes: Routes = [
       { path: 'assign-task', component: AssignTaskComponent },
       { path: 'tasks', component: TasksComponent },
       { path: 'employee', component: EmployeeComponent },
-      { path: 'task', component: AdminTaskViewComponent },
+      { path: 'task/:id', component: AdminTaskViewComponent },
+      { path: 'department', component: DepartmentComponent },
     ],
   },
   {

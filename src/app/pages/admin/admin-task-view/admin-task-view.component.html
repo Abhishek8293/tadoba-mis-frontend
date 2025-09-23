@@ -1,18 +1,25 @@
-<div class="task-view-wrapper">
+<div class="task-view-wrapper" *ngIf="task">
     <!-- Header -->
     <div class="header">
         <button mat-icon-button class="back-btn" (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
         </button>
         <span class="status-pill" [ngClass]="{
-        'pill-pending': task.status === 'Pending',
-        'pill-completed': task.status === 'Completed',
-        'pill-late': task.status === 'Late'
+        'pill-pending': task.status === 'PENDING',
+        'pill-completed': task.status === 'COMPLETED',
+        'pill-late': task.status === 'LATE',
+        'pill-overdue': task.status === 'OVERDUE'
       }">{{ task.status }}</span>
     </div>
 
-    <!-- Description -->
-    <div class="description">
+    <!-- Employee Name -->
+    <div class="employee-name">
+        <mat-icon class="emp-icon">person</mat-icon>
+        <span class="value">{{ task.employeeName }}</span>
+    </div>
+
+    <!-- Title -->
+    <div class="title">
         <p>{{ task.task }}</p>
     </div>
 
@@ -25,41 +32,45 @@
     <div class="details">
         <div class="detail-row">
             <span class="label">Assigned Date:</span>
-            <span class="value">{{ task.assignedDate | date:'mediumDate' }}</span>
+            <span class="value">{{ task.assignedDate | date: 'mediumDate' }}</span>
         </div>
         <div class="detail-row">
             <span class="label">Target Date:</span>
-            <span class="value">{{ task.targetDate | date:'mediumDate' }}</span>
+            <span class="value">{{ task.targetDate | date: 'mediumDate' }}</span>
         </div>
         <div class="detail-row" *ngIf="task.submissionDate">
             <span class="label">Submission Date:</span>
-            <span class="value">{{ task.submissionDate | date:'mediumDate' }}</span>
+            <span class="value">{{ task.submissionDate | date: 'mediumDate' }}</span>
         </div>
     </div>
 
-    <!-- Delete Button -->
+    <!-- Actions -->
     <div class="actions">
-         <button mat-raised-button color="primary" (click)="openEditTaskDialog()">
+        <button mat-raised-button  *ngIf="task.status !== 'COMPLETED'" color="primary" (click)="openEditTaskDialog()">
             Edit Task
         </button>
-        <button mat-raised-button color="warn" class="btn-delete" (click)="openDeleteDialog()">
+        <button mat-raised-button color="warn" (click)="openDeleteDialog()">
             Delete Task
         </button>
     </div>
 </div>
 
-
+<!-- Delete Confirmation Dialog -->
 <ng-template #deleteDialog>
     <div class="delete-dialog">
-        <p>Do you want to delete the Task ??</p>
+        <p>Do you want to delete the Task?</p>
         <div class="delete-dialog-actions">
-            <button mat-stroked-button color="warn" (click)="closeDeleteDialog()">No</button>
-            <button mat-flat-button color="primary">Yes</button>
+            <button mat-stroked-button color="warn" (click)="closeDeleteDialog()">
+                No
+            </button>
+            <button mat-flat-button color="primary" (click)="confirmDelete()">
+                Yes
+            </button>
         </div>
     </div>
 </ng-template>
 
-
+<!-- Edit Task Dialog -->
 <ng-template #editTaskDialog>
     <form [formGroup]="editTaskForm" class="task-form">
         <h3>Edit Task</h3>
@@ -67,9 +78,18 @@
         <!-- Task -->
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Task</mat-label>
-            <textarea matInput rows="3" formControlName="task"></textarea>
+            <input matInput formControlName="task" />
             <mat-error *ngIf="editTaskForm.get('task')?.hasError('required')">
                 Task is required
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="3" formControlName="description"></textarea>
+            <mat-error *ngIf="editTaskForm.get('description')?.hasError('required')">
+                Description is required
             </mat-error>
         </mat-form-field>
 
@@ -85,7 +105,9 @@
         </mat-form-field>
 
         <div class="dialog-actions">
-            <button mat-stroked-button color="warn" (click)="closeEditTaskDialog()">Cancel</button>
+            <button mat-stroked-button color="warn" (click)="closeEditTaskDialog()">
+                Cancel
+            </button>
             <button mat-flat-button color="primary" (click)="updateTask()" [disabled]="editTaskForm.invalid">
                 Update
             </button>

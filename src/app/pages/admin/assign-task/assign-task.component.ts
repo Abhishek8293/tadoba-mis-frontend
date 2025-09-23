@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -11,12 +11,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import {
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+} from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import { CUSTOM_DATE_FORMATS } from '../../../utils/date-formats';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-
+import { CUSTOM_DATE_FORMATS } from '../../../utils/date-formats';
+import { TaskService } from '../../../services/task.service';
+import { EmployeeService } from '../../../services/employee.service';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { TaskRequestDTO } from '../../../models/task.model';
+import { EmployeeResponseDTO } from '../../../models/employee.model';
+import { of, catchError } from 'rxjs';
+import moment from 'moment';
 
 @Component({
   selector: 'app-assign-task',
@@ -32,32 +42,82 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatNativeDateModule,
     MatButtonModule,
     MatIconModule,
-    MatMomentDateModule
+    MatMomentDateModule,
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
-    {provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS}
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
   templateUrl: './assign-task.component.html',
   styleUrls: ['./assign-task.component.css'],
 })
-export class AssignTaskComponent {
-  taskForm: FormGroup;
-  employees = ['John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Williams'];
+export class AssignTaskComponent implements OnInit {
+  taskForm!: FormGroup;
+  employees: EmployeeResponseDTO[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private taskService: TaskService,
+    private employeeService: EmployeeService,
+    private snackbar: SnackbarService
+  ) {}
+
+  ngOnInit(): void {
+    this.initForm();
+    this.loadEmployees();
+  }
+
+  private initForm(): void {
     this.taskForm = this.fb.group({
-      employee: ['', Validators.required],
+      employeeId: ['', Validators.required],
       targetDate: ['', Validators.required],
       task: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', Validators.required],
     });
   }
 
-  onSubmit() {
+  private loadEmployees(): void {
+    this.employeeService
+      .getAllEmployees()
+      .pipe(
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load employees');
+          return of([]);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res && res.success) {
+          this.employees = res.data;
+        }
+      });
+  }
+
+  onSubmit(): void {
     if (this.taskForm.valid) {
-      console.log('Task Assigned:', this.taskForm.value);
-      alert('✅ Task assigned successfully!');
-      this.taskForm.reset();
+      const formValue = this.taskForm.value;
+
+      const dto: TaskRequestDTO = {
+        task: formValue.task,
+        description: formValue.description || '',
+        targetDate: moment(formValue.targetDate).format('YYYY-MM-DD'),
+        submissionDate: undefined,
+        employeeId: formValue.employeeId,
+      };
+
+      this.taskService
+        .createTask(dto)
+        .pipe(
+          catchError(() => {
+            this.snackbar.openFailedSnackBar('Failed to assign task');
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res && res.success) {
+            this.snackbar.openSuccessSnackBar('Task assigned successfully');
+            this.taskForm.reset();
+          }
+        });
     }
   }
 }

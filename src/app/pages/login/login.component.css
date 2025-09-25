@@ -91,7 +91,7 @@
 }
 
 .submit-btn {
-  background-color: #4b4f94  !important;
+  background-color: #4b4f94 !important;
   color: #fff !important;
   font-weight: 500;
   padding: 12px 0;
@@ -115,8 +115,8 @@
 @media (max-width: 480px) {
   :host {
     padding: 12px;
-    align-items: flex-start;
-    padding-top: 40px;
+    justify-content: center; 
+    align-items: center;
   }
 
   .login-wrapper {

@@ -114,8 +114,8 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Action</th>
                 <td mat-cell *matCellDef="let task">
-                    <button mat-icon-button color="primary" [routerLink]="['/admin/task', task.id]">
-                        <mat-icon>remove_red_eye</mat-icon>
+                    <button mat-button color="primary" [routerLink]="['/admin/task', task.id]">
+                        View Here
                     </button>
                 </td>
             </ng-container>
@@ -143,11 +143,16 @@
             </div>
             <div class="task-body">
                 <p><strong>Task:</strong> {{ task.task }}</p>
+                <p><strong>Assigned Date:</strong> {{ task.assignedDate | date:'mediumDate' }}</p>
                 <p><strong>Target Date:</strong> {{ task.targetDate | date:'mediumDate' }}</p>
+                <p>
+                    <strong>Submission Date:</strong>
+                    {{ task.submissionDate ? (task.submissionDate | date:'mediumDate') : '—' }}
+                </p>
             </div>
             <div class="task-actions">
                 <button mat-stroked-button color="primary" [routerLink]="['/admin/task', task.id]">
-                    View
+                    View Here
                 </button>
             </div>
         </div>

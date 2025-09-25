@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialog,
@@ -7,16 +7,11 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
-interface Task {
-  id: number;
-  task: string;
-  description: string;
-  assignedDate: Date;
-  targetDate: Date;
-  submissionDate?: Date | null;
-  status: 'Pending' | 'Completed' | 'Late';
-}
+import { ActivatedRoute, Router } from '@angular/router';
+import { TaskService } from '../../../services/task.service';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { TaskResponseDTO } from '../../../models/task.model';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-emp-task-view',
@@ -25,24 +20,45 @@ interface Task {
   templateUrl: './emp-task-view.component.html',
   styleUrl: './emp-task-view.component.css',
 })
-export class EmpTaskViewComponent {
-  //
+export class EmpTaskViewComponent implements OnInit {
   @ViewChild('submitDialog') submitDialogTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  // Simulated input task (later you can pass via routing or service)
-  task: Task = {
-    id: 1,
-    task: 'Prepare Financial Report',
-    description:
-      'Compile all financial transactions for August and prepare the monthly report for review.',
-    assignedDate: new Date('2025-08-30'),
-    targetDate: new Date('2025-09-05'),
-    submissionDate: null,
-    status: 'Pending',
-  };
+  taskId!: number;
+  task!: TaskResponseDTO;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private taskService: TaskService,
+    private snackbar: SnackbarService,
+    private dialog: MatDialog
+  ) {}
+
+  ngOnInit(): void {
+    this.taskId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadTask();
+  }
+
+  loadTask(): void {
+    this.taskService
+      .getTaskById(this.taskId)
+      .pipe(
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load task');
+          return of(null);
+        })
+      )
+      .subscribe((res) => {
+        if (res && res.success && res.data) {
+          this.task = res.data;
+        }
+      });
+  }
+
+  goBack() {
+    this.router.navigate(['/tasks']); 
+  }
 
   openSubmitDialog() {
     this.dialogRef = this.dialog.open(this.submitDialogTemplate, {
@@ -56,12 +72,21 @@ export class EmpTaskViewComponent {
     this.dialogRef.close();
   }
 
-  goBack() {
-    // Navigate back to task list
-    window.history.back();
-  }
-
-  submitTask() {
-    alert('Task Submitted Successfully!');
+  confirmSubmit(): void {
+    this.taskService
+      .submitTask(this.taskId)
+      .pipe(
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to submit task');
+          return of(null);
+        })
+      )
+      .subscribe((res) => {
+        if (res && res.success && res.data) {
+          this.snackbar.openSuccessSnackBar('Task submitted successfully');
+          this.task = res.data; 
+          this.closeSubmitDialog();
+        }
+      });
   }
 }

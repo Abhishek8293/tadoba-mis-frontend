@@ -77,6 +77,7 @@ import moment from 'moment';
 export class EmployeeComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'srNo',
+    'joiningDate',
     'name',
     'email',
     'dob',
@@ -141,8 +142,9 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       departmentId: ['', Validators.required],
+      joiningDate: ['', Validators.required],
       dob: ['', Validators.required],
-      responsibilities: [''],
+      responsibilities: ['', Validators.required],
     });
 
     this.editEmployeeForm = this.fb.group({
@@ -150,8 +152,9 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       departmentId: ['', Validators.required],
-      dob: ['', Validators.required], 
-      responsibilities: [''],
+      joiningDate: ['', Validators.required],
+      dob: ['', Validators.required],
+      responsibilities: ['', Validators.required],
     });
   }
 
@@ -189,11 +192,11 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
     return this.dataSource.filteredData.length;
   }
 
- 
   openAddEmployeeDialog(): void {
     this.addEmployeeForm.reset();
     this.dialogRef = this.dialog.open(this.addEmployeeDialogTemplate, {
       width: '500px',
+      maxHeight: '95vh',
       disableClose: true,
     });
   }
@@ -207,6 +210,7 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
         email: formValue.email,
         password: 'default123',
         departmentId: formValue.departmentId,
+        joiningDate: moment(formValue.joiningDate).format('YYYY-MM-DD'),
         dob: moment(formValue.dob).format('YYYY-MM-DD'),
         responsibilities: formValue.responsibilities || '',
       };
@@ -214,14 +218,15 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
       this.employeeService
         .createEmployee(dto)
         .pipe(
-          catchError(() => {
-            this.snackbar.openFailedSnackBar('Failed to create employee');
+          catchError((err) => {
+            const backendMsg = err?.error?.message || 'Failed to save employee';
+            this.snackbar.openFailedSnackBar(backendMsg);
             return of(null);
           })
         )
         .subscribe((res) => {
           if (res && res.success) {
-            this.snackbar.openSuccessSnackBar('Employee created successfully');
+            this.snackbar.openSuccessSnackBar('Employee added successfully');
             this.loadEmployees();
             this.closeDialog();
           }
@@ -229,7 +234,6 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
     }
   }
 
- 
   openEditEmployeeDialog(emp: EmployeeResponseDTO): void {
     this.selectedEmpId = emp.id;
     this.editEmployeeForm.patchValue({
@@ -237,11 +241,15 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
       name: emp.name,
       email: emp.email,
       departmentId: emp.departmentId,
-      dob: emp.dob ? moment(emp.dob, 'YYYY-MM-DD').toDate() : null, 
+      joiningDate: emp.joiningDate
+        ? moment(emp.joiningDate, 'YYYY-MM-DD').toDate()
+        : null,
+      dob: emp.dob ? moment(emp.dob, 'YYYY-MM-DD').toDate() : null,
       responsibilities: emp.responsibilities,
     });
     this.dialogRef = this.dialog.open(this.editEmployeeDialogTemplate, {
       width: '500px',
+      maxHeight: '95vh',
       disableClose: true,
     });
   }
@@ -252,9 +260,10 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
 
       const dto: EmployeeRequestDTO = {
         ...formValue,
-        dob: formValue.dob
-          ? moment(formValue.dob).format('YYYY-MM-DD')
-          : null, 
+        joiningDate: formValue.joiningDate
+          ? moment(formValue.joiningDate).format('YYYY-MM-DD')
+          : null,
+        dob: formValue.dob ? moment(formValue.dob).format('YYYY-MM-DD') : null,
       };
 
       this.employeeService
@@ -275,7 +284,6 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
   openDeleteDialog(id: number): void {
     this.selectedEmpId = id;
     this.dialogRef = this.dialog.open(this.deleteDialogTemplate, {
@@ -304,7 +312,6 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
   closeDialog(): void {
     this.dialogRef.close();
   }

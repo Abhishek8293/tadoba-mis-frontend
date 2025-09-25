@@ -60,6 +60,7 @@ export class AdminTaskViewComponent implements OnInit {
   task!: TaskResponseDTO;
   editTaskForm!: FormGroup;
   taskId!: number;
+  minDate: Date = new Date();
 
   constructor(
     private dialog: MatDialog,

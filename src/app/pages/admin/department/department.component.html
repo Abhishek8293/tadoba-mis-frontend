@@ -26,6 +26,13 @@
                 <td mat-cell *matCellDef="let dept">{{ dept.name }}</td>
             </ng-container>
 
+            <ng-container matColumnDef="inchargeName">
+                <th mat-header-cell *matHeaderCellDef>Incharge</th>
+                <td mat-cell *matCellDef="let dept">
+                    {{ dept.inchargeName || 'Not Assigned' }}
+                </td>
+            </ng-container>
+
             <!-- Actions -->
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
@@ -48,7 +55,8 @@
     <div class="cards-section">
         <div class="department-card" *ngFor="let dept of dataSource.data; let i = index">
             <div class="department-header">
-                <b>{{ dept.name }}</b>
+                <h6>{{ dept.name }}</h6>
+                <h6><b>Incharge:</b> {{dept.inchargeName || 'Not Assigned'}}</h6>
             </div>
             <div class="department-actions">
                 <button mat-icon-button color="accent" (click)="openEditDepartmentDialog(dept)">
@@ -65,7 +73,7 @@
 
 <!-- Delete Confirmation Dialog -->
 <ng-template #deleteDialog (keydown.enter)="$event.preventDefault()">
-    <div class="delete-dialog" >
+    <div class="delete-dialog">
         <p>Do you want to delete this department?</p>
         <div class="delete-dialog-actions">
             <button mat-stroked-button color="warn" (click)="closeDeleteDialog()">No</button>
@@ -86,6 +94,17 @@
                 Department name is required
             </mat-error>
         </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogMode === 'edit' && employees.length > 0">
+            <mat-label>Incharge</mat-label>
+            <mat-select formControlName="inchargeId">
+                <mat-option [value]="null">None</mat-option>
+                <mat-option *ngFor="let emp of employees" [value]="emp.id">
+                    {{ emp.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
 
         <div class="dialog-actions">
             <button mat-stroked-button color="warn" (click)="closeDepartmentDialog()">Cancel</button>

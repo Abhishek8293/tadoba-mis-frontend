@@ -20,7 +20,7 @@
             <!-- Target Date -->
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Target Date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="targetDate" />
+                <input matInput [matDatepicker]="picker" formControlName="targetDate" [min]="minDate"/>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error *ngIf="taskForm.get('targetDate')?.hasError('required')">

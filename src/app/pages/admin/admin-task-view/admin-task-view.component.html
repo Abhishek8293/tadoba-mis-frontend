@@ -46,7 +46,8 @@
 
     <!-- Actions -->
     <div class="actions">
-        <button mat-raised-button  *ngIf="task.status !== 'COMPLETED'" color="primary" (click)="openEditTaskDialog()">
+        <button mat-raised-button *ngIf="!['COMPLETED', 'LATE'].includes(task.status)" color="primary"
+            (click)="openEditTaskDialog()">
             Edit Task
         </button>
         <button mat-raised-button color="warn" (click)="openDeleteDialog()">
@@ -96,7 +97,7 @@
         <!-- Target Date -->
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Target Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="targetDate" />
+            <input matInput [matDatepicker]="picker" formControlName="targetDate" [min]="minDate" />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="editTaskForm.get('targetDate')?.hasError('required')">

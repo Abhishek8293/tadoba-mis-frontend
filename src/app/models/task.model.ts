@@ -21,3 +21,12 @@ export interface TaskResponseDTO {
   createdAt: string;
   updatedAt: string;
 }
+
+
+export interface TaskStatusCountDTO {
+  total: number;
+  completed: number;
+  pending: number;
+  late: number;
+  overdue: number;
+}

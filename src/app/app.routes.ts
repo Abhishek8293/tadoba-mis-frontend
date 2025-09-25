@@ -12,10 +12,13 @@ import { EmpProfileComponent } from './pages/employee/emp-profile/emp-profile.co
 import { EmpTaskViewComponent } from './pages/employee/emp-task-view/emp-task-view.component';
 import { AdminTaskViewComponent } from './pages/admin/admin-task-view/admin-task-view.component';
 import { DepartmentComponent } from './pages/admin/department/department.component';
+import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'admin',
+    canActivate: [authGuard],
+    data: { roles: ['ADMIN'] },
     component: AdminComponent,
     children: [
       { path: '', component: AdminHomeComponent },
@@ -29,12 +32,14 @@ export const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [authGuard],
+    data: { roles: ['EMPLOYEE'] },
     component: EmpComponent,
     children: [
       { path: '', component: EmpHomeComponent },
       { path: 'tasks', component: EmpTasksComponent },
       { path: 'profile', component: EmpProfileComponent },
-      { path: 'task', component: EmpTaskViewComponent },
+      { path: 'task/:id', component: EmpTaskViewComponent },
     ],
   },
   { path: 'login', component: LoginComponent },

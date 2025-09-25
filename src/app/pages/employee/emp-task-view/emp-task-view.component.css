@@ -21,8 +21,7 @@
 
 .task-title {
   flex: 1;
-  text-align: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   color: #222;
@@ -43,20 +42,39 @@
 .pill-pending {
   background: #fff3cd;
   color: #856404;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
+
 .pill-completed {
   background: #d4edda;
   color: #155724;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
+
 .pill-late {
   background: #f8d7da;
   color: #721c24;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.pill-overdue {
+  background: #f5c6cb;
+  color: #a71d2a;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
 
 /* Description */
 .description {
   margin-bottom: 16px;
-  font-size: 14px;
+  font-size: 16px;
   color: #444;
 }
 
@@ -124,12 +142,12 @@
 }
 
 .submit-dialog-actions button[color="primary"] {
-  background-color: #28a745 ;
+  background-color: #28a745;
   color: #fff;
 }
 
 .submit-dialog-actions button[color="primary"]:hover {
-  background-color: #28a745 ;
+  background-color: #28a745;
 }
 
 /* Mobile Friendly */

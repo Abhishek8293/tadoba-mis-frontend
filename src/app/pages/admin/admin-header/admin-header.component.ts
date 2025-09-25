@@ -10,11 +10,13 @@ import {
   faPlus,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
+import { MatIcon } from '@angular/material/icon';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'app-admin-header',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule,RouterModule],
+  imports: [CommonModule, FontAwesomeModule, RouterModule, MatIcon],
   templateUrl: './admin-header.component.html',
   styleUrls: ['./admin-header.component.css'],
 })
@@ -28,7 +30,10 @@ export class AdminHeaderComponent {
 
   isMenuOpen = false;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ) {
     this.router.events.subscribe(() => {
       this.isMenuOpen = false;
     });
@@ -36,5 +41,10 @@ export class AdminHeaderComponent {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  logout() {
+    this.localStorageService.clearUser();
+    this.router.navigate(['/login']);
   }
 }

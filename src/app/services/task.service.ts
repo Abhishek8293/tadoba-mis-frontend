@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TaskRequestDTO, TaskResponseDTO } from '../models/task.model';
+import {
+  TaskRequestDTO,
+  TaskResponseDTO,
+  TaskStatusCountDTO,
+} from '../models/task.model';
 import { ApiResponse } from '../utils/apiresponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private baseUrl = 'http://localhost:8080/api/tasks';
+  private baseUrl = 'https://api.tadobasolutions.com/api/tasks';
 
   constructor(private http: HttpClient) {}
 
@@ -53,6 +57,20 @@ export class TaskService {
     return this.http.put<ApiResponse<TaskResponseDTO>>(
       `${this.baseUrl}/${id}/submit`,
       {}
+    );
+  }
+
+  getTaskStatusCounts(
+    employeeId?: number
+  ): Observable<ApiResponse<TaskStatusCountDTO>> {
+    let params = new HttpParams();
+    if (employeeId !== undefined && employeeId !== null) {
+      params = params.set('employeeId', employeeId.toString());
+    }
+
+    return this.http.get<ApiResponse<TaskStatusCountDTO>>(
+      `${this.baseUrl}/status-counts`,
+      { params }
     );
   }
 }

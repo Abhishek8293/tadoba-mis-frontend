@@ -22,6 +22,10 @@ import { DepartmentDTO } from '../../../models/department.model';
 import { DepartmentService } from '../../../services/department.service';
 import { ApiResponse } from '../../../utils/apiresponse';
 import { SnackbarService } from '../../../services/snackbar.service';
+import { EmployeeResponseDTO } from '../../../models/employee.model';
+import { EmployeeService } from '../../../services/employee.service';
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-department',
@@ -35,15 +39,19 @@ import { SnackbarService } from '../../../services/snackbar.service';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-  ],
+    MatOptionModule,
+    MatSelectModule
+],
   templateUrl: './department.component.html',
   styleUrl: './department.component.css',
 })
 export class DepartmentComponent implements OnInit {
-  displayedColumns: string[] = ['srNo', 'name', 'actions'];
+  displayedColumns: string[] = ['srNo', 'name', 'inchargeName', 'actions'];
 
   //MatTableDataSource
   dataSource = new MatTableDataSource<DepartmentDTO>([]);
+
+  employees: EmployeeResponseDTO[] = [];
 
   // Dialog templates
   @ViewChild('deleteDialog') deleteDialogTemplate!: TemplateRef<any>;
@@ -58,11 +66,13 @@ export class DepartmentComponent implements OnInit {
   constructor(
     private departmentService: DepartmentService,
     private snackbar: SnackbarService,
+    private employeeService: EmployeeService,
     private dialog: MatDialog,
     private fb: FormBuilder
   ) {
     this.departmentForm = this.fb.group({
       name: ['', Validators.required],
+      inchargeId: [null],
     });
   }
 
@@ -100,7 +110,11 @@ export class DepartmentComponent implements OnInit {
   openEditDepartmentDialog(dept: DepartmentDTO): void {
     this.dialogMode = 'edit';
     this.selectedDeptId = dept.id;
-    this.departmentForm.patchValue({ name: dept.name });
+      this.loadEmployees();
+    this.departmentForm.patchValue({
+      name: dept.name,
+      inchargeId: dept.inchargeId || null,
+    });
     this.dialogRef = this.dialog.open(this.departmentDialogTemplate, {
       width: '400px',
       disableClose: true,
@@ -111,21 +125,22 @@ export class DepartmentComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // Save Add/Edit
   saveDepartment(): void {
     if (this.departmentForm.valid) {
       const deptName = this.departmentForm.value.name;
+      const inchargeId = this.departmentForm.value.inchargeId;
 
       let apiCall: Observable<ApiResponse<DepartmentDTO>>;
       let successMessage = '';
 
       if (this.dialogMode === 'add') {
         apiCall = this.departmentService.createDepartment(deptName);
-        successMessage = 'Department created successfully!';
+        successMessage = 'Department added successfully!';
       } else {
         apiCall = this.departmentService.updateDepartment(
           this.selectedDeptId!,
-          deptName
+          deptName,
+          inchargeId
         );
         successMessage = 'Department updated successfully!';
       }
@@ -187,5 +202,17 @@ export class DepartmentComponent implements OnInit {
 
   get totalDepartments(): number {
     return this.dataSource.data.length;
+  }
+
+   loadEmployees(): void {
+    this.employeeService.getAllEmployees()
+      .pipe(
+        map((res: ApiResponse<EmployeeResponseDTO[]>) => res.data), 
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to load employees');
+          return of([]);
+        })
+      )
+      .subscribe((data: EmployeeResponseDTO[]) => this.employees = data); 
   }
 }

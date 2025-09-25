@@ -37,6 +37,12 @@
                         <span>Department</span>
                     </a>
                 </li>
+                <li>
+                    <button class="logout-btn" (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                        <span class="logout-text">Logout</span>
+                    </button>
+                </li>
             </ul>
         </nav>
 
@@ -73,6 +79,12 @@
                 <a routerLink="department" class="mobile-nav-link">
                     <span>Department</span>
                 </a>
+            </li>
+            <li class="mobile-nav-item accordion">
+                <button class="logout-btn" (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span class="logout-text">Logout</span>
+                </button>
             </li>
         </ul>
     </nav>

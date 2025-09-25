@@ -54,6 +54,7 @@ import moment from 'moment';
 export class AssignTaskComponent implements OnInit {
   taskForm!: FormGroup;
   employees: EmployeeResponseDTO[] = [];
+  minDate: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -115,7 +116,18 @@ export class AssignTaskComponent implements OnInit {
         .subscribe((res) => {
           if (res && res.success) {
             this.snackbar.openSuccessSnackBar('Task assigned successfully');
-            this.taskForm.reset();
+            this.taskForm.reset({
+              employeeId: null,
+              targetDate: null,
+              task: '',
+              description: '',
+            });
+
+            Object.keys(this.taskForm.controls).forEach((key) => {
+              this.taskForm.get(key)?.setErrors(null);
+              this.taskForm.get(key)?.markAsPristine();
+              this.taskForm.get(key)?.markAsUntouched();
+            });
           }
         });
     }

@@ -109,7 +109,12 @@
   border-radius: 15px;
   font-size: 12px;
 }
-
+.modern-table .mat-column-task{
+  max-width: 340px;        
+  white-space: normal;     
+  word-wrap: break-word;   
+  overflow-wrap: anywhere; 
+}
 
 /* ---------- Responsive Cards ---------- */
 .cards-section {

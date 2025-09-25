@@ -79,9 +79,15 @@
 
 .department-header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 6px;
+}
+
+.department-header h6 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
 .department-actions {
@@ -153,7 +159,12 @@
   background-color: #444b94;
   color: #fff;
 }
-
+.dialog-actions button[color="primary"][disabled] {
+  background-color: #a9a9a9 !important;
+  color: #ffffff !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .table-section {

@@ -11,10 +11,13 @@
         <mat-tab label="Employee">
             <form [formGroup]="employeeLoginForm" (ngSubmit)="onEmployeeLogin()" class="form-section">
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>User ID</mat-label>
-                    <input matInput formControlName="userId" />
-                    <mat-error *ngIf="employeeLoginForm.get('userId')?.hasError('required')">
-                        User ID is required
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
+                    <mat-error *ngIf="employeeLoginForm.get('email')?.hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="employeeLoginForm.get('email')?.hasError('email')">
+                        Invalid email
                     </mat-error>
                 </mat-form-field>
 
@@ -39,10 +42,13 @@
         <mat-tab label="Admin">
             <form [formGroup]="adminLoginForm" (ngSubmit)="onAdminLogin()" class="form-section">
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>User ID</mat-label>
-                    <input matInput formControlName="userId" />
-                    <mat-error *ngIf="adminLoginForm.get('userId')?.hasError('required')">
-                        User ID is required
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
+                    <mat-error *ngIf="adminLoginForm.get('email')?.hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="adminLoginForm.get('email')?.hasError('email')">
+                        Invalid email
                     </mat-error>
                 </mat-form-field>
 

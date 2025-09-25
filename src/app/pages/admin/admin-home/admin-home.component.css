@@ -70,12 +70,12 @@
 }
 
 .kpi-card.pending {
-  background: #fff8e6;
-  border-color: #ffe0a3;
+  background: #fff9e6;
+  border-color: #ffe5a3;
 }
 .kpi-card.pending .kpi-icon,
 .kpi-card.pending .kpi-value {
-  color: #ffc107;
+  color: #ff9800;
 }
 
 .kpi-card.late {
@@ -85,6 +85,15 @@
 .kpi-card.late .kpi-icon,
 .kpi-card.late .kpi-value {
   color: #dc3545;
+}
+
+.kpi-card.overdue {
+  background: #f7eaf7;
+  border-color: #e0b3e6;
+}
+.kpi-card.overdue .kpi-icon,
+.kpi-card.overdue .kpi-value {
+  color: #9c27b0;
 }
 
 /* Responsive */

@@ -68,7 +68,12 @@
 .row-hover:hover {
   background-color: #f5faff;
 }
-
+.modern-table .mat-column-task{
+  max-width: 340px;        
+  white-space: normal;     
+  word-wrap: break-word;   
+  overflow-wrap: anywhere; 
+}
 /* ---------- Status Pills ---------- */
 .status-pill {
   display: inline-block;
@@ -82,16 +87,33 @@
 .pill-pending {
   background: #fff3cd;
   color: #856404;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
 
 .pill-completed {
   background: #d4edda;
   color: #155724;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
 
 .pill-late {
   background: #f8d7da;
   color: #721c24;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.pill-overdue {
+  background: #f5c6cb;
+  color: #a71d2a;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
 }
 
 /* ---------- Responsive Cards ---------- */
@@ -125,7 +147,10 @@
   gap: 6px;
   margin-top: 8px;
 }
-
+.no-data{
+  padding: 50px 0;
+  text-align: center;
+}
 /* ---------- Breakpoints ---------- */
 @media (max-width: 768px) {
   .table-section {
@@ -145,7 +170,7 @@
     margin-top: 10px;
   }
 
-  .filter-toggle-wrapper{
+  .filter-toggle-wrapper {
     display: flex;
     justify-content: flex-end;
   }

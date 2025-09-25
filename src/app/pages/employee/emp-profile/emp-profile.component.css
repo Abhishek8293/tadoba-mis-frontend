@@ -10,6 +10,10 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;   
   text-align: center;
   color: #4b4f94;
   font-size: 20px;
@@ -78,7 +82,7 @@ button[mat-raised-button]:hover {
 
 .dialog-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 12px;
 }
 
@@ -89,6 +93,28 @@ button[mat-raised-button]:hover {
 
 .dialog-actions button[color="primary"]:hover {
   background-color: #218838;
+}
+.dialog-actions button[color="primary"][disabled] {
+  background-color: #a9a9a9 !important; /* light gray */
+  color: #ffffff !important; /* white text */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.incharge-badge {
+  display: inline-block;
+  background-color: #f5e6a1;  
+  color: #6b5b2a;              
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 8px;            
+  border-radius: 8px;          
+  margin-left: 6px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border: 1px solid #e0c97f;   
+  line-height: 1.4;            
 }
 
 /* ✅ Optimized Mobile View */

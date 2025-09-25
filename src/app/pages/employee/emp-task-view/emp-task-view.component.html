@@ -1,57 +1,63 @@
-<div class="task-view-wrapper">
+<div class="task-view-wrapper" *ngIf="task">
     <!-- Header -->
     <div class="header">
         <button mat-icon-button class="back-btn" (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
         </button>
         <span class="status-pill" [ngClass]="{
-        'pill-pending': task.status === 'Pending',
-        'pill-completed': task.status === 'Completed',
-        'pill-late': task.status === 'Late'
-      }">{{ task.status }}</span>
+        'pill-pending': task.status === 'PENDING',
+        'pill-completed': task.status === 'COMPLETED',
+        'pill-late': task.status === 'LATE',
+        'pill-overdue': task.status === 'OVERDUE'
+      }">
+            {{ task.status }}
+        </span>
     </div>
 
-    <!-- Description -->
+    <!-- Task Title -->
     <div class="description">
-        <p>{{ task.task }}</p>
+        <p><b>Title:</b> {{ task.task }}</p>
     </div>
 
-    <!-- Description -->
+    <!-- Task Description -->
     <div class="description">
-        <p>{{ task.description }}</p>
+        <p> <b>Description:</b> {{ task.description }}</p>
     </div>
 
     <!-- Dates -->
     <div class="details">
         <div class="detail-row">
             <span class="label">Assigned Date:</span>
-            <span class="value">{{ task.assignedDate | date:'mediumDate' }}</span>
+            <span class="value">{{ task.assignedDate | date: 'mediumDate' }}</span>
         </div>
         <div class="detail-row">
             <span class="label">Target Date:</span>
-            <span class="value">{{ task.targetDate | date:'mediumDate' }}</span>
+            <span class="value">{{ task.targetDate | date: 'mediumDate' }}</span>
         </div>
         <div class="detail-row" *ngIf="task.submissionDate">
             <span class="label">Submission Date:</span>
-            <span class="value">{{ task.submissionDate | date:'mediumDate' }}</span>
+            <span class="value">{{ task.submissionDate | date: 'mediumDate' }}</span>
         </div>
     </div>
 
-    <!-- Submit Button -->
-    <div class="actions" *ngIf="task.status === 'Pending'">
+    <div class="actions" *ngIf="!['COMPLETED', 'LATE'].includes(task.status)">
         <button mat-raised-button color="primary" class="btn-submit" (click)="openSubmitDialog()">
             Submit Task
         </button>
     </div>
 </div>
 
-
+<!-- Submit Confirmation Dialog -->
 <ng-template #submitDialog>
     <div class="submit-dialog">
         <p>Do you want to submit the Task ??</p>
         <div class="submit-dialog-actions">
-            <button mat-stroked-button color="warn" (click)="closeSubmitDialog()">No</button>
-            <button mat-flat-button color="primary">Yes</button>
+            <button mat-stroked-button color="warn" (click)="closeSubmitDialog()">
+                No
+            </button>
+            <button mat-flat-button color="primary" (click)="confirmSubmit()">
+                Yes
+            </button>
         </div>
     </div>
 </ng-template>

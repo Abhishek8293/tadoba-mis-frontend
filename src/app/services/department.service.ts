@@ -1,27 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DepartmentDTO } from '../models/department.model';
 import { ApiResponse } from '../utils/apiresponse';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DepartmentService {
-
-  private baseUrl = 'http://localhost:8080/api/departments'; 
+  private baseUrl = 'https://api.tadobasolutions.com/api/departments';
 
   constructor(private http: HttpClient) {}
 
   createDepartment(name: string): Observable<ApiResponse<DepartmentDTO>> {
     return this.http.post<ApiResponse<DepartmentDTO>>(
-      `${this.baseUrl}?name=${encodeURIComponent(name)}`, {}
+      `${this.baseUrl}?name=${encodeURIComponent(name)}`,
+      {}
     );
   }
 
-  updateDepartment(id: number, name: string): Observable<ApiResponse<DepartmentDTO>> {
+  updateDepartment(
+    id: number,
+    name: string,
+    inchargeId?: number
+  ): Observable<ApiResponse<DepartmentDTO>> {
+    let params = new HttpParams().set('name', name);
+
+    if (inchargeId !== undefined && inchargeId !== null) {
+      params = params.set('inchargeId', inchargeId.toString());
+    }
+
     return this.http.put<ApiResponse<DepartmentDTO>>(
-      `${this.baseUrl}/${id}?name=${encodeURIComponent(name)}`, {}
+      `${this.baseUrl}/${id}`,
+      {},
+      { params }
     );
   }
 

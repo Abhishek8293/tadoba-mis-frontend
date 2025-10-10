@@ -1,0 +1,28 @@
+<div class="emp-highlight-wrapper" *ngIf="latestHighlights.length > 0; else noHighlights">
+    <div class="header">
+        <div class="title-section">
+            <mat-icon class="highlight-icon">emoji_events</mat-icon>
+            <h3>Latest Highlights</h3>
+        </div>
+        <!-- <a class="view-all" href="#" (click)="$event.preventDefault()">View All</a> -->
+    </div>
+
+    <div class="highlight-list">
+        <mat-card *ngFor="let h of latestHighlights" class="highlight-card" appearance="outlined">
+            <div class="highlight-header">
+                <mat-icon>star</mat-icon>
+                <span class="highlight-date">{{ formatDateTime(h.createdAt) }}</span>
+            </div>
+
+            <div class="highlight-body">
+                <p>{{ h.description }}</p>
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+<ng-template #noHighlights>
+    <div class="no-data">
+        <p>No recent highlights available</p>
+    </div>
+</ng-template>

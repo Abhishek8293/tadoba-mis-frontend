@@ -71,6 +71,7 @@
   background-color: #f5faff;
 }
 
+
 /* ---------- Card View ---------- */
 .cards-section {
   display: none;
@@ -157,7 +158,7 @@
 .employee-form {
   display: flex;
   flex-direction: column;
-  max-height: 80vh; 
+  max-height: 80vh;
   padding: 0;
 }
 
@@ -173,12 +174,12 @@
 
 /* Scrollable form fields */
 .employee-form .form-fields {
-   flex: 1;
+  flex: 1;
   overflow-y: auto;
   padding: 10px 16px;
   display: flex;
-  flex-direction: column;   
-  gap: 12px;   
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* Dialog Actions */

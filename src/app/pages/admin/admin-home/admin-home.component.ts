@@ -6,11 +6,13 @@ import { catchError, of } from 'rxjs';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { TaskService } from '../../../services/task.service';
 import { ApiResponse } from '../../../utils/apiresponse';
+import { EmpNoticeComponent } from "../../employee/emp-notice/emp-notice.component";
+import { EmpHighlightComponent } from "../../employee/emp-highlight/emp-highlight.component";
 
 @Component({
   selector: 'app-admin-home',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, EmpNoticeComponent, EmpHighlightComponent],
   templateUrl: './admin-home.component.html',
   styleUrls: ['./admin-home.component.css'],
 })

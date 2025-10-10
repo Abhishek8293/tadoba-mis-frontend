@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -17,6 +17,7 @@ import { catchError, of } from 'rxjs';
   selector: 'app-emp-task-view',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, MatDialogModule],
+  providers: [DatePipe],
   templateUrl: './emp-task-view.component.html',
   styleUrl: './emp-task-view.component.css',
 })
@@ -32,7 +33,8 @@ export class EmpTaskViewComponent implements OnInit {
     private router: Router,
     private taskService: TaskService,
     private snackbar: SnackbarService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class EmpTaskViewComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/tasks']); 
+    this.router.navigate(['/tasks']);
   }
 
   openSubmitDialog() {
@@ -84,9 +86,13 @@ export class EmpTaskViewComponent implements OnInit {
       .subscribe((res) => {
         if (res && res.success && res.data) {
           this.snackbar.openSuccessSnackBar('Task submitted successfully');
-          this.task = res.data; 
+          this.task = res.data;
           this.closeSubmitDialog();
         }
       });
+  }
+
+  formatDateTime(date: string): string {
+    return this.datePipe.transform(date, 'd MMM yyyy, h:mm a') || '';
   }
 }

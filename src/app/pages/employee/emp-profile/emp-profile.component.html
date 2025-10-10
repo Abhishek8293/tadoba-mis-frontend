@@ -10,6 +10,14 @@
         <span class="label">Email:</span>
         <span class="value" *ngIf="employee">{{ employee.email }}</span>
     </div>
+     <div class="profile-field">
+        <span class="label">DOJ:</span>
+        <span class="value" *ngIf="employee">{{ employee.joiningDate | date:'mediumDate'}}</span>
+    </div>
+     <div class="profile-field">
+        <span class="label">DOB:</span>
+        <span class="value" *ngIf="employee">{{ employee.dob | date:'mediumDate'}}</span>
+    </div>
 
     <div class="profile-field">
         <span class="label">Department:</span>

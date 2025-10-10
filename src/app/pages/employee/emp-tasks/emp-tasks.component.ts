@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -46,6 +46,7 @@ import moment from 'moment';
     MatSortModule,
   ],
   providers: [
+    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
@@ -80,7 +81,8 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
   constructor(
     private taskService: TaskService,
     private snackbar: SnackbarService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -152,5 +154,9 @@ export class EmpTasksComponent implements OnInit, AfterViewInit {
     if (!this.isMobile) {
       this.filtersOpen = true;
     }
+  }
+
+  formatDateTime(date: string): string {
+    return this.datePipe.transform(date, 'd MMM yyyy, h:mm a') || '';
   }
 }

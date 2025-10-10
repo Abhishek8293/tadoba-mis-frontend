@@ -6,11 +6,13 @@ import { TaskService } from '../../../services/task.service';
 import { ApiResponse } from '../../../utils/apiresponse';
 import { catchError, of } from 'rxjs';
 import { TaskStatusCountDTO } from '../../../models/task.model';
+import { EmpNoticeComponent } from "../emp-notice/emp-notice.component";
+import { EmpHighlightComponent } from "../emp-highlight/emp-highlight.component";
 
 @Component({
   selector: 'app-emp-home',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, EmpNoticeComponent, EmpHighlightComponent],
   templateUrl: './emp-home.component.html',
   styleUrl: './emp-home.component.css',
 })

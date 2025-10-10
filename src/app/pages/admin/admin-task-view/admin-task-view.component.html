@@ -32,15 +32,15 @@
     <div class="details">
         <div class="detail-row">
             <span class="label">Assigned Date:</span>
-            <span class="value">{{ task.assignedDate | date: 'mediumDate' }}</span>
+            <span class="value">{{ formatDateTime(task.assignedDate)}}</span>
         </div>
         <div class="detail-row">
             <span class="label">Target Date:</span>
-            <span class="value">{{ task.targetDate | date: 'mediumDate' }}</span>
+            <span class="value">{{ formatDateTime(task.targetDate) }}</span>
         </div>
         <div class="detail-row" *ngIf="task.submissionDate">
             <span class="label">Submission Date:</span>
-            <span class="value">{{ task.submissionDate | date: 'mediumDate' }}</span>
+            <span class="value">{{ formatDateTime(task.submissionDate) }}</span>
         </div>
     </div>
 
@@ -94,16 +94,26 @@
             </mat-error>
         </mat-form-field>
 
-        <!-- Target Date -->
-        <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Target Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="targetDate" [min]="minDate" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="editTaskForm.get('targetDate')?.hasError('required')">
-                Target Date is required
-            </mat-error>
-        </mat-form-field>
+        <!-- Target Date & Time -->
+        <div class="datetime-group">
+            <mat-form-field appearance="outline" class="datetime-field">
+                <mat-label>Target Date*</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="targetDate" [min]="minDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="datetime-field">
+                <mat-label>Target Time*</mat-label>
+                <input matInput [ngxMatTimepicker]="timePicker" readonly formControlName="targetTime"
+                    placeholder="Select time" />
+                <ngx-mat-timepicker #timePicker [format]="12"></ngx-mat-timepicker>
+                <mat-icon matSuffix>access_time</mat-icon>
+                <mat-error *ngIf="editTaskForm.get('targetTime')?.hasError('required')">
+                    Target Time is required
+                </mat-error>
+            </mat-form-field>
+        </div>
 
         <div class="dialog-actions">
             <button mat-stroked-button color="warn" (click)="closeEditTaskDialog()">

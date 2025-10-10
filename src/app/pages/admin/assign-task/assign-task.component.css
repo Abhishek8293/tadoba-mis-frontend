@@ -64,6 +64,21 @@ mat-form-field {
   cursor: not-allowed;
   transform: none !important;
 }
+.datetime-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.half-width {
+  flex: 1 1 48%;
+  min-width: 180px;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(40%) sepia(20%) saturate(400%) hue-rotate(210deg);
+  cursor: pointer;
+}
 
 /* Responsive */
 @media (max-width: 600px) {

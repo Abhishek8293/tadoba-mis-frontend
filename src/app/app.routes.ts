@@ -13,6 +13,8 @@ import { EmpTaskViewComponent } from './pages/employee/emp-task-view/emp-task-vi
 import { AdminTaskViewComponent } from './pages/admin/admin-task-view/admin-task-view.component';
 import { DepartmentComponent } from './pages/admin/department/department.component';
 import { authGuard } from './core/auth.guard';
+import { NoticeComponent } from './pages/admin/notice/notice.component';
+import { HighlightComponent } from './pages/admin/highlight/highlight.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,8 @@ export const routes: Routes = [
       { path: 'employee', component: EmployeeComponent },
       { path: 'task/:id', component: AdminTaskViewComponent },
       { path: 'department', component: DepartmentComponent },
+      { path: 'notice', component: NoticeComponent },
+      { path: 'highlight', component: HighlightComponent },
     ],
   },
   {

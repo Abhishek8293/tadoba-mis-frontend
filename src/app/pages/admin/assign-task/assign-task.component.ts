@@ -26,6 +26,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { TaskRequestDTO } from '../../../models/task.model';
 import { EmployeeResponseDTO } from '../../../models/employee.model';
 import { of, catchError } from 'rxjs';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import moment from 'moment';
 
 @Component({
@@ -43,6 +44,7 @@ import moment from 'moment';
     MatButtonModule,
     MatIconModule,
     MatMomentDateModule,
+    NgxMatTimepickerModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
@@ -72,6 +74,7 @@ export class AssignTaskComponent implements OnInit {
     this.taskForm = this.fb.group({
       employeeId: ['', Validators.required],
       targetDate: ['', Validators.required],
+      targetTime: ['', Validators.required],
       task: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', Validators.required],
     });
@@ -93,6 +96,28 @@ export class AssignTaskComponent implements OnInit {
       });
   }
 
+  updateDateTime(): string | null {
+    const date = this.taskForm.get('targetDate')?.value;
+    const time = this.taskForm.get('targetTime')?.value;
+
+    if (!date || !time) return null;
+
+    const parsed = moment(time, ['h:mm A', 'HH:mm']);
+
+    if (!parsed.isValid()) return null;
+
+    const finalDateTime = moment(date)
+      .set({
+        hour: parsed.hour(),
+        minute: parsed.minute(),
+        second: 0,
+        millisecond: 0,
+      })
+      .format('YYYY-MM-DDTHH:mm:ss');
+
+    return finalDateTime;
+  }
+
   onSubmit(): void {
     if (this.taskForm.valid) {
       const formValue = this.taskForm.value;
@@ -100,7 +125,7 @@ export class AssignTaskComponent implements OnInit {
       const dto: TaskRequestDTO = {
         task: formValue.task,
         description: formValue.description || '',
-        targetDate: moment(formValue.targetDate).format('YYYY-MM-DD'),
+        targetDate: this.updateDateTime()!,
         submissionDate: undefined,
         employeeId: formValue.employeeId,
       };

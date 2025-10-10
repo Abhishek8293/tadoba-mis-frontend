@@ -1,0 +1,122 @@
+.emp-highlight-wrapper {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.highlight-icon {
+  color: #f9a825;
+  background: #fffde7;
+  padding: 6px;
+  border-radius: 50%;
+  font-size: 22px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.view-all {
+  color: #f9a825;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Highlight Cards ---------- */
+.highlight-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.highlight-card {
+  padding: 14px 16px;
+  border: 1px solid #ffecb3;
+  border-radius: 8px;
+  background: #fff;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.highlight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(249, 168, 37, 0.15);
+}
+
+.highlight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.highlight-header mat-icon {
+  color: #fbc02d;
+}
+
+.highlight-date {
+  font-size: 13px;
+  color: #777;
+  font-weight: 500;
+}
+
+.highlight-body p {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* ---------- Empty State ---------- */
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #999;
+}
+
+.no-data mat-icon {
+  font-size: 40px;
+  color: #ccc;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .highlight-list {
+    grid-template-columns: 1fr;
+  }
+
+  .emp-highlight-wrapper {
+    padding: 14px;
+  }
+}

@@ -1,0 +1,205 @@
+.highlight-wrapper {
+  padding: 20px;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  color: #222;
+}
+
+/* ---------- Header ---------- */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  border: 1px solid #ffecb3;
+  border-radius: 6px;
+  background: #fffde7;
+  padding: 12px 16px;
+}
+
+.header-section h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.header-section span {
+  font-weight: 700;
+  color: #f9a825;
+}
+
+.header-section button {
+  background-color: #f9a825;
+  color: #fff;
+  transition: 0.3s ease;
+}
+
+.header-section button:hover {
+  background-color: #f57f17;
+}
+
+/* ---------- Table ---------- */
+.table-section {
+  border: 1px solid #ffecb3;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modern-table th {
+  background-color: #f9a825 !important;
+  color: #fff;
+  font-weight: 500 !important;
+}
+
+.modern-table th,
+.modern-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.row-hover:hover {
+  background-color: #fffde7;
+}
+
+/* ---------- Long Text Wrapping ---------- */
+.modern-table .mat-column-description {
+  max-width: 420px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Mobile Cards ---------- */
+.cards-section {
+  display: none;
+}
+
+.highlight-card {
+  border: 1px solid #ffecb3;
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(249, 168, 37, 0.1);
+  transition: all 0.3s ease;
+}
+
+.highlight-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(249, 168, 37, 0.2);
+}
+
+.highlight-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.highlight-card-header b {
+  font-size: 15px;
+  color: #f9a825;
+}
+
+.highlight-date {
+  font-size: 13px;
+  color: #777;
+}
+
+.highlight-description p {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 8px 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.highlight-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  border-top: 1px solid #eee;
+  padding-top: 6px;
+}
+
+/* ---------- Dialog ---------- */
+.highlight-form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px;
+}
+
+.highlight-form h3 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #f9a825;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.dialog-actions button {
+  min-width: 90px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.dialog-actions button[color="primary"] {
+  background-color: #f9a825;
+  color: #fff;
+}
+
+.dialog-actions button[color="primary"]:hover {
+  background-color: #f57f17;
+}
+
+/* ---------- Delete Dialog ---------- */
+.delete-dialog {
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.delete-dialog p {
+  font-weight: 500;
+  color: #f9a825;
+}
+
+.delete-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.delete-dialog-actions button[color="primary"] {
+  background-color: #f9a825;
+  color: #fff;
+}
+
+.delete-dialog-actions button[color="primary"]:hover {
+  background-color: #f57f17;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .table-section {
+    display: none;
+  }
+
+  .cards-section {
+    display: block;
+  }
+}

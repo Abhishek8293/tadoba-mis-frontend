@@ -18,15 +18,29 @@
             </mat-form-field>
 
             <!-- Target Date -->
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Target Date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="targetDate" [min]="minDate"/>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="taskForm.get('targetDate')?.hasError('required')">
-                    Target Date is required
-                </mat-error>
-            </mat-form-field>
+            <div class="datetime-group">
+                <mat-form-field appearance="outline" class="half-width">
+                    <mat-label>Target Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="targetDate" [min]="minDate"
+                        (dateChange)="updateDateTime()" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="taskForm.get('targetDate')?.hasError('required')">
+                        Target Date is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="half-width">
+                    <mat-label>Target Time</mat-label>
+                    <input matInput [ngxMatTimepicker]="timePicker" readonly formControlName="targetTime"
+                        placeholder="Select time" />
+                    <ngx-mat-timepicker #timePicker [format]="12"></ngx-mat-timepicker>
+                    <mat-icon matSuffix>access_time</mat-icon>
+                    <mat-error *ngIf="taskForm.get('targetTime')?.hasError('required')">
+                        Target Time is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
             <!-- Task Title -->
             <mat-form-field appearance="outline" class="full-width">

@@ -4,47 +4,65 @@
     <div class="kpi-grid">
         <!-- Total Tasks -->
         <div class="kpi-card total">
-            <mat-icon class="kpi-icon">assignment</mat-icon>
-            <div class="kpi-text">
-                <h3>Total Tasks</h3>
-                <p class="kpi-value">{{ totalTasks }}</p>
+            <div class="kpi-header">
+                <div class="kpi-left">
+                    <mat-icon>assignment</mat-icon>
+                    <span>Total Tasks</span>
+                </div>
+                <h2>{{ totalTasks }}</h2>
             </div>
+            <div class="kpi-footer">Overall assigned</div>
         </div>
 
         <!-- Completed -->
         <div class="kpi-card completed">
-            <mat-icon class="kpi-icon">check_circle</mat-icon>
-            <div class="kpi-text">
-                <h3>Completed Task</h3>
-                <p class="kpi-value">{{ completedTasks }}</p>
+            <div class="kpi-header">
+                <div class="kpi-left">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>Completed</span>
+                </div>
+                <h2>{{ completedTasks }}</h2>
             </div>
+            <div class="kpi-footer">Finished successfully</div>
         </div>
 
         <!-- Pending -->
         <div class="kpi-card pending">
-            <mat-icon class="kpi-icon">hourglass_empty</mat-icon>
-            <div class="kpi-text">
-                <h3>Pending Task</h3>
-                <p class="kpi-value">{{ pendingTasks }}</p>
+            <div class="kpi-header">
+                <div class="kpi-left">
+                    <mat-icon>hourglass_empty</mat-icon>
+                    <span>Pending</span>
+                </div>
+                <h2>{{ pendingTasks }}</h2>
             </div>
+            <div class="kpi-footer">Awaiting submission</div>
         </div>
 
         <!-- Late -->
         <div class="kpi-card late">
-            <mat-icon class="kpi-icon">error_outline</mat-icon>
-            <div class="kpi-text">
-                <h3>Late Submission</h3>
-                <p class="kpi-value">{{ lateTasks }}</p>
+            <div class="kpi-header">
+                <div class="kpi-left">
+                    <mat-icon>error_outline</mat-icon>
+                    <span>Late</span>
+                </div>
+                <h2>{{ lateTasks }}</h2>
             </div>
+            <div class="kpi-footer">Submitted after deadline</div>
         </div>
 
         <!-- Overdue -->
         <div class="kpi-card overdue">
-            <mat-icon class="kpi-icon">schedule</mat-icon>
-            <div class="kpi-text">
-                <h3>Overdue</h3>
-                <p class="kpi-value">{{ overdueTasks }}</p>
+            <div class="kpi-header">
+                <div class="kpi-left">
+                    <mat-icon>schedule</mat-icon>
+                    <span>Overdue</span>
+                </div>
+                <h2>{{ overdueTasks }}</h2>
             </div>
+            <div class="kpi-footer">Deadline passed</div>
         </div>
     </div>
+
+    <app-emp-notice></app-emp-notice>
+    <app-emp-highlight></app-emp-highlight>
 </div>

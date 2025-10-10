@@ -15,5 +15,5 @@ export const CUSTOM_DATE_FORMATS = {
 
 export const DATE_FORMAT_PROVIDERS = [
   { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
-  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: false } },
 ];

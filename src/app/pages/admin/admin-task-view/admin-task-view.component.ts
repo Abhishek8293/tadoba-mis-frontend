@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -15,11 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-  MatNativeDateModule,
-} from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { CUSTOM_DATE_FORMATS } from '../../../utils/date-formats';
@@ -29,6 +25,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { TaskResponseDTO } from '../../../models/task.model';
 import { catchError, of } from 'rxjs';
 import moment from 'moment';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 @Component({
   selector: 'app-admin-task-view',
@@ -43,12 +40,14 @@ import moment from 'moment';
     MatInputModule,
     MatDatepickerModule,
     MatMomentDateModule,
-    MatNativeDateModule,
+    NgxMatTimepickerModule,
   ],
   providers: [
+    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
+
   templateUrl: './admin-task-view.component.html',
   styleUrls: ['./admin-task-view.component.css'],
 })
@@ -68,7 +67,8 @@ export class AdminTaskViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private taskService: TaskService,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -94,13 +94,15 @@ export class AdminTaskViewComponent implements OnInit {
   }
 
   private initForm(): void {
+    // Parse backend ISO string (e.g., 2025-10-22T03:30:00)
+    const dateTime = moment(this.task.targetDate, moment.ISO_8601);
+    moment.locale('en-gb');
+
     this.editTaskForm = this.fb.group({
       task: [this.task.task, Validators.required],
       description: [this.task.description, Validators.required],
-      targetDate: [
-        this.task.targetDate ? moment(this.task.targetDate).toDate() : null,
-        Validators.required,
-      ],
+      targetDate: [dateTime, Validators.required], 
+      targetTime: [dateTime.format('hh:mm A'), Validators.required],
     });
   }
 
@@ -135,6 +137,7 @@ export class AdminTaskViewComponent implements OnInit {
   }
 
   openEditTaskDialog() {
+    console.log(this.editTaskForm.value);
     this.dialogRef = this.dialog.open(this.editTaskDialogTemplate, {
       width: '500px',
       disableClose: true,
@@ -149,11 +152,22 @@ export class AdminTaskViewComponent implements OnInit {
   updateTask() {
     if (this.editTaskForm.valid) {
       const formValue = this.editTaskForm.value;
+
+      const parsedTime = moment(formValue.targetTime, ['h:mm A', 'HH:mm']);
+      const finalDateTime = moment(formValue.targetDate)
+        .set({
+          hour: parsedTime.hour(),
+          minute: parsedTime.minute(),
+          second: 0,
+          millisecond: 0,
+        })
+        .format('YYYY-MM-DDTHH:mm:ss');
+
       const dto = {
         ...this.task,
         task: formValue.task,
-         description: formValue.description,
-        targetDate: moment(formValue.targetDate).format('YYYY-MM-DD'),
+        description: formValue.description,
+        targetDate: finalDateTime,
       };
 
       this.taskService
@@ -176,5 +190,9 @@ export class AdminTaskViewComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/admin/tasks']);
+  }
+
+  formatDateTime(date: string): string {
+    return this.datePipe.transform(date, 'd MMM yyyy, h:mm a') || '';
   }
 }

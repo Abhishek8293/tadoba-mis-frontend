@@ -1,0 +1,128 @@
+<div class="highlight-wrapper">
+    <div class="header-section">
+        <h3>Total Highlights: <span>{{ dataSource.data.length }}</span></h3>
+        <button mat-button color="primary" (click)="openAddHighlightDialog()">
+            <mat-icon>add</mat-icon> Add Highlight
+        </button>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-section">
+        <table mat-table matSort [dataSource]="dataSource" class="modern-table">
+            <!-- Sr No -->
+            <ng-container matColumnDef="srNo">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let h; let i = index">{{ i + 1 }}</td>
+            </ng-container>
+
+            <!-- Description -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                <td mat-cell *matCellDef="let h">{{ h.description }}</td>
+            </ng-container>
+
+            <!-- Created Date -->
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created On</th>
+                <td mat-cell *matCellDef="let h">{{ formatDateTime(h.createdAt) }}</td>
+            </ng-container>
+
+            <!-- Action -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let h">
+                    <button mat-icon-button color="accent" (click)="openEditHighlightDialog(h)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="openDeleteDialog(h.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" class="row-hover"></tr>
+        </table>
+
+        <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="cards-section">
+        <div class="highlight-card" *ngFor="let h of dataSource.filteredData; let i = index">
+            <div class="highlight-card-header">
+                <b>#{{ i + 1 }}</b>
+                <p class="highlight-date">{{ formatDateTime(h.createdAt) }}</p>
+            </div>
+
+            <div class="highlight-description">
+                <p>{{ h.description }}</p>
+            </div>
+
+            <div class="highlight-actions">
+                <button mat-icon-button color="accent" (click)="openEditHighlightDialog(h)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="openDeleteDialog(h.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Dialog -->
+    <ng-template #deleteDialog>
+        <div class="delete-dialog">
+            <p>Do you want to delete this highlight?</p>
+            <div class="delete-dialog-actions">
+                <button mat-stroked-button color="warn" (click)="closeDialog()">No</button>
+                <button mat-flat-button color="primary" (click)="confirmDelete()">Yes</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- Add Dialog -->
+    <ng-template #addHighlightDialog>
+        <form [formGroup]="addHighlightForm" class="highlight-form">
+            <h3>Add Highlight</h3>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="5"></textarea>
+                <mat-error *ngIf="addHighlightForm.get('description')?.hasError('required')">
+                    Description is required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="dialog-actions">
+                <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="saveNewHighlight()"
+                    [disabled]="addHighlightForm.invalid">
+                    Save
+                </button>
+            </div>
+        </form>
+    </ng-template>
+
+    <!-- Edit Dialog -->
+    <ng-template #editHighlightDialog>
+        <form [formGroup]="editHighlightForm" class="highlight-form">
+            <h3>Edit Highlight</h3>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="5"></textarea>
+                <mat-error *ngIf="editHighlightForm.get('description')?.hasError('required')">
+                    Description is required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="dialog-actions">
+                <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="updateHighlight()"
+                    [disabled]="editHighlightForm.invalid">
+                    Update
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</div>

@@ -1,0 +1,129 @@
+<div class="notice-wrapper">
+    <!-- Header Section -->
+    <div class="header-section">
+        <h3>Total Notices: <span>{{ dataSource.data.length }}</span></h3>
+        <button mat-button color="primary" (click)="openAddNoticeDialog()">
+            <mat-icon>add</mat-icon> Add Notice
+        </button>
+    </div>
+
+    <!-- Table Section (Desktop) -->
+    <div class="table-section">
+        <table mat-table matSort [dataSource]="dataSource" class="modern-table">
+            <!-- Sr No -->
+            <ng-container matColumnDef="srNo">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let n; let i = index">{{ i + 1 }}</td>
+            </ng-container>
+
+            <!-- Description -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                <td mat-cell *matCellDef="let n">{{ n.description }}</td>
+            </ng-container>
+
+            <!-- Created Date -->
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created On</th>
+                <td mat-cell *matCellDef="let n">{{ formatDateTime(n.createdAt) }}</td>
+            </ng-container>
+
+            <!-- Action -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let n">
+                    <button mat-icon-button color="accent" (click)="openEditNoticeDialog(n)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="openDeleteDialog(n.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" class="row-hover"></tr>
+        </table>
+
+        <mat-paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- Mobile Cards Section -->
+    <div class="cards-section">
+        <div class="notice-card" *ngFor="let n of dataSource.filteredData; let i = index">
+            <div class="notice-card-header">
+                <b>Notice {{ i + 1 }}</b>
+                <p class="notice-date">{{ formatDateTime(n.createdAt) }}</p>
+            </div>
+
+            <div class="notice-description">
+                <p>{{ n.description }}</p>
+            </div>
+
+            <div class="notice-actions">
+                <button mat-icon-button color="accent" (click)="openEditNoticeDialog(n)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="openDeleteDialog(n.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Dialog -->
+    <ng-template #deleteDialog>
+        <div class="delete-dialog">
+            <p>Do you want to delete this notice?</p>
+            <div class="delete-dialog-actions">
+                <button mat-stroked-button color="warn" (click)="closeDialog()">No</button>
+                <button mat-flat-button color="primary" (click)="confirmDelete()">Yes</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- Add Notice Dialog -->
+    <ng-template #addNoticeDialog>
+        <form [formGroup]="addNoticeForm" class="notice-form">
+            <h3>Add Notice</h3>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="5"></textarea>
+                <mat-error *ngIf="addNoticeForm.get('description')?.hasError('required')">
+                    Description is required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="dialog-actions">
+                <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="saveNewNotice()" [disabled]="addNoticeForm.invalid">
+                    Save
+                </button>
+            </div>
+        </form>
+    </ng-template>
+
+    <!-- Edit Notice Dialog -->
+    <ng-template #editNoticeDialog>
+        <form [formGroup]="editNoticeForm" class="notice-form">
+            <h3>Edit Notice</h3>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="5"></textarea>
+                <mat-error *ngIf="editNoticeForm.get('description')?.hasError('required')">
+                    Description is required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="dialog-actions">
+                <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="updateNotice()" [disabled]="editNoticeForm.invalid">
+                    Update
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</div>

@@ -216,12 +216,17 @@
   opacity: 0.7;
 }
 .modern-table .mat-column-responsibilities {
-  max-width: 320px;
+  max-width: 300px;
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: anywhere;
 }
-
+.modern-table .mat-column-department {
+  max-width: 300px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .table-section {

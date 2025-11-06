@@ -8,7 +8,7 @@ import { ApiResponse } from '../utils/apiresponse';
   providedIn: 'root',
 })
 export class NoticeService {
-  private baseUrl = 'http://localhost:8080/api/notices';
+  private baseUrl = 'https://api.tadobasolutions.com/api/notices';
 
   constructor(private http: HttpClient) {}
 

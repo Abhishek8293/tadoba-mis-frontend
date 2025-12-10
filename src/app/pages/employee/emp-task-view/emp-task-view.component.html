@@ -38,6 +38,27 @@
             <span class="label">Submission Date:</span>
             <span class="value">{{ formatDateTime(task.submissionDate)}}</span>
         </div>
+
+        <div *ngIf="['COMPLETED', 'LATE'].includes(task.status)" class="ratings-section">
+
+            <!-- Employee Rating -->
+            <div class="rating-display">
+                <label><b>Your Rating</b></label>
+                <div class="show-stars">
+                    <mat-icon *ngFor="let star of [1,2,3,4,5]" [ngClass]="{'filled': star <= task.empRating}">
+                        {{ star <= task.empRating ? 'star' : 'star_border' }} </mat-icon>
+                </div>
+            </div>
+
+            <!-- Admin Rating -->
+            <div *ngIf="task.adminRating != null && task.adminRating !=0" class="rating-display">
+                <label><b>Admin Rating</b></label>
+                <div class="show-stars">
+                    <mat-icon *ngFor="let star of [1,2,3,4,5]" [ngClass]="{'filled': star <= task.adminRating}">
+                        {{ star <= task.adminRating ? 'star' : 'star_border' }} </mat-icon>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="actions" *ngIf="!['COMPLETED', 'LATE'].includes(task.status)">
@@ -50,14 +71,29 @@
 <!-- Submit Confirmation Dialog -->
 <ng-template #submitDialog>
     <div class="submit-dialog">
-        <p>Do you want to submit the Task ??</p>
+
+        <p>Do you want to submit the Task?</p>
+
+        <!-- ⭐ Employee Rating -->
+        <div class="rating-box">
+            <label class="rating-label"><b>Rate Your Work</b></label>
+
+            <div class="stars">
+                <mat-icon *ngFor="let star of [1,2,3,4,5]" (click)="empRating = star"
+                    [ngClass]="{'filled': star <= empRating}">
+                    {{ star <= empRating ? 'star' : 'star_border' }} </mat-icon>
+            </div>
+        </div>
+
         <div class="submit-dialog-actions">
             <button mat-stroked-button color="warn" (click)="closeSubmitDialog()">
                 No
             </button>
+
             <button mat-flat-button color="primary" (click)="confirmSubmit()">
                 Yes
             </button>
         </div>
+
     </div>
 </ng-template>

@@ -1,11 +1,13 @@
-import { TaskStatus } from "./task.enum";
+import { TaskStatus } from './task.enum';
 
 export interface TaskRequestDTO {
-  task: string;
-  description: string;
-  targetDate: string;
+  task?: string;
+  description?: string;
+  targetDate?: string;
   submissionDate?: string;
-  employeeId: number;
+  employeeId?: number;
+  empRating?: number;
+  adminRating?: number;
 }
 
 export interface TaskResponseDTO {
@@ -18,10 +20,11 @@ export interface TaskResponseDTO {
   employeeId: number;
   employeeName: string;
   assignedDate: string;
+  empRating: number;
+  adminRating: number;
   createdAt: string;
   updatedAt: string;
 }
-
 
 export interface TaskStatusCountDTO {
   total: number;

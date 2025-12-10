@@ -43,21 +43,28 @@
 
             <!-- Employee Rating -->
             <div class="rating-display">
-                <label><b>Your Rating</b></label>
+                <label><b>Your Rating ({{task.empRating}})</b></label>
                 <div class="show-stars">
-                    <mat-icon *ngFor="let star of [1,2,3,4,5]" [ngClass]="{'filled': star <= task.empRating}">
+                    <mat-icon *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]"
+                        [ngClass]="{'filled': star <= task.empRating}">
                         {{ star <= task.empRating ? 'star' : 'star_border' }} </mat-icon>
                 </div>
             </div>
 
             <!-- Admin Rating -->
             <div *ngIf="task.adminRating != null && task.adminRating !=0" class="rating-display">
-                <label><b>Admin Rating</b></label>
+                <label><b>Admin Rating ({{task.adminRating}})</b></label>
                 <div class="show-stars">
-                    <mat-icon *ngFor="let star of [1,2,3,4,5]" [ngClass]="{'filled': star <= task.adminRating}">
+                    <mat-icon *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]"
+                        [ngClass]="{'filled': star <= task.adminRating}">
                         {{ star <= task.adminRating ? 'star' : 'star_border' }} </mat-icon>
                 </div>
             </div>
+        </div>
+        <div *ngIf="['COMPLETED', 'LATE'].includes(task.status) && task.adminRemarks && task.adminRemarks.trim().length >= 3"
+            class="admin-remarks">
+            <b class="rating-label">Admin Remarks</b>
+            <p>{{task.adminRemarks}}</p>
         </div>
     </div>
 
@@ -76,10 +83,10 @@
 
         <!-- ⭐ Employee Rating -->
         <div class="rating-box">
-            <label class="rating-label"><b>Rate Your Work</b></label>
+            <label class="rating-label"><b>Rate Your Work ({{empRating}})</b></label>
 
             <div class="stars">
-                <mat-icon *ngFor="let star of [1,2,3,4,5]" (click)="empRating = star"
+                <mat-icon *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]" (click)="empRating = star"
                     [ngClass]="{'filled': star <= empRating}">
                     {{ star <= empRating ? 'star' : 'star_border' }} </mat-icon>
             </div>

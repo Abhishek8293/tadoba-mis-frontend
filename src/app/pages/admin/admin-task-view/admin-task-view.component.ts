@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -32,6 +33,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
@@ -62,6 +64,7 @@ export class AdminTaskViewComponent implements OnInit {
   taskId!: number;
   minDate: Date = new Date();
   adminRating: number = 0;
+  adminRemarks: string = '';
 
   constructor(
     private dialog: MatDialog,
@@ -209,6 +212,7 @@ export class AdminTaskViewComponent implements OnInit {
   closeAdminRatingDialog() {
     this.dialogRef.close();
     this.adminRating = 0;
+    this.adminRemarks = '';
   }
 
   submitAdminRating() {
@@ -219,7 +223,15 @@ export class AdminTaskViewComponent implements OnInit {
       return;
     }
 
-    const dto = { adminRating: this.adminRating };
+    if (this.adminRemarks.trim().length <= 3) {
+      this.snackbar.openFailedSnackBar('Please provide remarks');
+      return;
+    }
+
+    const dto = {
+      adminRating: this.adminRating,
+      adminRemarks: this.adminRemarks?.trim() || '',
+    };
 
     this.taskService
       .updateTask(this.taskId, dto)
@@ -232,7 +244,7 @@ export class AdminTaskViewComponent implements OnInit {
       .subscribe((res) => {
         if (res?.success) {
           this.snackbar.openSuccessSnackBar('Rating submitted successfully');
-          this.task = res.data; // refresh UI
+          this.task = res.data;
           this.closeAdminRatingDialog();
         }
       });

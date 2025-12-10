@@ -8,7 +8,7 @@ import { ApiResponse } from '../utils/apiresponse';
   providedIn: 'root',
 })
 export class HighlightService {
-  private baseUrl = 'https://api.tadobasolutions.com/api/highlights';
+  private baseUrl = 'http://localhost:8080/api/highlights';
 
   constructor(private http: HttpClient) {}
 

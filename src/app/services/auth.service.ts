@@ -9,7 +9,7 @@ import { ChangePasswordDTO } from '../models/change-password.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'https://api.tadobasolutions.com/api/auth';
+  private baseUrl = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,10 @@ export class AuthService {
     return this.http.post<ApiResponse<LoginDTO>>(`${this.baseUrl}/login`, dto);
   }
 
-   changePassword(dto: ChangePasswordDTO): Observable<ApiResponse<void>> {
-    return this.http.post<ApiResponse<void>>(`${this.baseUrl}/change-password`, dto);
+  changePassword(dto: ChangePasswordDTO): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(
+      `${this.baseUrl}/change-password`,
+      dto
+    );
   }
 }

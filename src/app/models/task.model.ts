@@ -8,6 +8,7 @@ export interface TaskRequestDTO {
   employeeId?: number;
   empRating?: number;
   adminRating?: number;
+  adminRemarks?: string;
 }
 
 export interface TaskResponseDTO {
@@ -22,6 +23,7 @@ export interface TaskResponseDTO {
   assignedDate: string;
   empRating: number;
   adminRating: number;
+  adminRemarks: string;
   createdAt: string;
   updatedAt: string;
 }

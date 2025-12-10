@@ -9,7 +9,7 @@ import { EmployeeResponseDTO, EmployeeRequestDTO } from '../models/employee.mode
   providedIn: 'root',
 })
 export class EmployeeService {
-  private baseUrl = 'https://api.tadobasolutions.com/api/employees';
+  private baseUrl = 'http://localhost:8080/api/employees';
 
   constructor(private http: HttpClient) {}
 

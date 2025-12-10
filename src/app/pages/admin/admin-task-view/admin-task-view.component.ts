@@ -54,12 +54,14 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 export class AdminTaskViewComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialogTemplate!: TemplateRef<any>;
   @ViewChild('editTaskDialog') editTaskDialogTemplate!: TemplateRef<any>;
+  @ViewChild('adminRatingDialog') adminRatingDialogTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
   task!: TaskResponseDTO;
   editTaskForm!: FormGroup;
   taskId!: number;
   minDate: Date = new Date();
+  adminRating: number = 0;
 
   constructor(
     private dialog: MatDialog,
@@ -101,7 +103,7 @@ export class AdminTaskViewComponent implements OnInit {
     this.editTaskForm = this.fb.group({
       task: [this.task.task, Validators.required],
       description: [this.task.description, Validators.required],
-      targetDate: [dateTime, Validators.required], 
+      targetDate: [dateTime, Validators.required],
       targetTime: [dateTime.format('hh:mm A'), Validators.required],
     });
   }
@@ -194,5 +196,45 @@ export class AdminTaskViewComponent implements OnInit {
 
   formatDateTime(date: string): string {
     return this.datePipe.transform(date, 'd MMM yyyy, h:mm a') || '';
+  }
+  openAdminRatingDialog() {
+    this.adminRating = 0;
+    this.dialogRef = this.dialog.open(this.adminRatingDialogTemplate, {
+      width: '500px',
+      disableClose: true,
+      autoFocus: true,
+    });
+  }
+
+  closeAdminRatingDialog() {
+    this.dialogRef.close();
+    this.adminRating = 0;
+  }
+
+  submitAdminRating() {
+    if (this.adminRating === 0) {
+      this.snackbar.openFailedSnackBar(
+        'Please give a rating before submitting.'
+      );
+      return;
+    }
+
+    const dto = { adminRating: this.adminRating };
+
+    this.taskService
+      .updateTask(this.taskId, dto)
+      .pipe(
+        catchError(() => {
+          this.snackbar.openFailedSnackBar('Failed to submit rating');
+          return of(null);
+        })
+      )
+      .subscribe((res) => {
+        if (res?.success) {
+          this.snackbar.openSuccessSnackBar('Rating submitted successfully');
+          this.task = res.data; // refresh UI
+          this.closeAdminRatingDialog();
+        }
+      });
   }
 }

@@ -130,7 +130,7 @@
 /* Actions row */
 .submit-dialog-actions {
   display: flex;
-  justify-content: space-between; /* align buttons to right */
+  justify-content: space-between;
   gap: 12px;
 }
 
@@ -138,7 +138,7 @@
 .submit-dialog-actions button {
   min-width: 90px;
   font-weight: 500;
-  text-transform: none; /* keep normal case */
+  text-transform: none;
 }
 
 .submit-dialog-actions button[color="primary"] {
@@ -149,7 +149,74 @@
 .submit-dialog-actions button[color="primary"]:hover {
   background-color: #28a745;
 }
+.rating-label {
+  padding: 10px;
+}
+.stars {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  gap: 15px;
+}
 
+.stars mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+  color: #bbb;
+  transition: color 0.2s;
+}
+
+.stars mat-icon.filled {
+  color: #fbc02d;
+}
+.ratings-section {
+  margin-top: 20px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rating-display {
+  margin-bottom: 15px;
+}
+
+.rating-display label {
+  font-size: 15px;
+  color: #333;
+}
+
+.rating-display .show-stars mat-icon {
+  cursor: default;
+}
+.show-stars {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  gap: 15px;
+}
+.show-stars {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  gap: 15px;
+}
+
+.show-stars mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+  color: #bbb;
+  transition: color 0.2s;
+}
+.show-stars mat-icon.filled {
+  color: #fbc02d;
+}
 /* Mobile Friendly */
 @media (max-width: 600px) {
   .task-view-wrapper {
@@ -175,5 +242,8 @@
   }
   .btn-submit {
     width: 100%;
+  }
+  .ratings-section {
+    flex-direction: column;
   }
 }

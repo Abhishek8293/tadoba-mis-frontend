@@ -28,6 +28,8 @@ export class EmpTaskViewComponent implements OnInit {
   taskId!: number;
   task!: TaskResponseDTO;
 
+  empRating: number = 0;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -72,24 +74,36 @@ export class EmpTaskViewComponent implements OnInit {
 
   closeSubmitDialog() {
     this.dialogRef.close();
+    this.empRating = 0;
   }
 
   confirmSubmit(): void {
-    this.taskService
-      .submitTask(this.taskId)
-      .pipe(
-        catchError(() => {
-          this.snackbar.openFailedSnackBar('Failed to submit task');
-          return of(null);
-        })
-      )
-      .subscribe((res) => {
-        if (res && res.success && res.data) {
-          this.snackbar.openSuccessSnackBar('Task submitted successfully');
-          this.task = res.data;
-          this.closeSubmitDialog();
-        }
-      });
+    if (this.empRating === 0) {
+      this.snackbar.openFailedSnackBar(
+        'Please give a rating before submitting.'
+      );
+      return;
+    }
+
+    const data = { empRating: this.empRating };
+
+    this.taskService.updateTask(this.taskId, data).subscribe(() => {
+      this.taskService
+        .submitTask(this.taskId)
+        .pipe(
+          catchError(() => {
+            this.snackbar.openFailedSnackBar('Failed to submit task');
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res?.success) {
+            this.snackbar.openSuccessSnackBar('Task submitted successfully');
+            this.task = res.data;
+            this.closeSubmitDialog();
+          }
+        });
+    });
   }
 
   formatDateTime(date: string): string {

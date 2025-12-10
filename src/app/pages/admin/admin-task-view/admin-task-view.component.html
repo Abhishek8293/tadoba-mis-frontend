@@ -42,6 +42,35 @@
             <span class="label">Submission Date:</span>
             <span class="value">{{ formatDateTime(task.submissionDate) }}</span>
         </div>
+        <!-- ⭐ Ratings Section -->
+        <div *ngIf="['COMPLETED', 'LATE'].includes(task.status)" class="ratings-section">
+
+            <!-- Employee Rating -->
+            <div class="rating-display">
+                <label><b>Employee Rating</b></label>
+                <div class="show-stars">
+                    <mat-icon *ngFor="let star of [1,2,3,4,5]" [ngClass]="{ 'filled': star <= task.empRating }">
+                        {{ star <= task.empRating ? 'star' : 'star_border' }} </mat-icon>
+                </div>
+            </div>
+
+            <!-- Admin Rating -->
+            <div class="rating-display">
+                <label *ngIf="task.adminRating != null && task.adminRating != 0"><b>Admin Rating</b></label>
+
+                <!-- Show stars when rating exists -->
+                <div *ngIf="task.adminRating !== null && task.adminRating !== 0" class="show-stars">
+                    <mat-icon *ngFor="let star of [1,2,3,4,5]" [ngClass]="{ 'filled': star <= task.adminRating }">
+                        {{ star <= task.adminRating ? 'star' : 'star_border' }} </mat-icon>
+                </div>
+
+                <!-- Show Rate button when rating missing: (null or 0) -->
+                <button *ngIf="task.adminRating === null || task.adminRating === 0" mat-raised-button color="primary"
+                    class="btn-rate" (click)="openAdminRatingDialog()">
+                    Rate Task
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Actions -->
@@ -124,4 +153,30 @@
             </button>
         </div>
     </form>
+</ng-template>
+
+<ng-template #adminRatingDialog>
+    <div class="submit-dialog">
+
+        <p>Rate This Task</p>
+
+        <div class="rating-box">
+            <label class="rating-label"><b>Admin Rating</b></label>
+
+            <div class="stars">
+                <mat-icon *ngFor="let star of [1,2,3,4,5]" (click)="adminRating = star"
+                    [ngClass]="{ 'filled': star <= adminRating }">
+                    {{ star <= adminRating ? 'star' : 'star_border' }} </mat-icon>
+            </div>
+        </div>
+
+        <div class="submit-dialog-actions">
+            <button mat-stroked-button color="warn" (click)="closeAdminRatingDialog()">No</button>
+
+            <button mat-flat-button color="primary" (click)="submitAdminRating()">
+                Yes
+            </button>
+        </div>
+
+    </div>
 </ng-template>

@@ -12,8 +12,8 @@ import { ApiResponse } from '../utils/apiresponse';
   providedIn: 'root',
 })
 export class TaskService {
-  // private baseUrl = 'https://api.tadobasolutions.com/api/tasks';
-  private baseUrl = 'http://localhost:8080/api/tasks';
+  private baseUrl = 'https://api.tadobasolutions.com/api/tasks';
+  
 
   constructor(private http: HttpClient) {}
 

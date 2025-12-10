@@ -40,7 +40,7 @@ export class EmpNoticeComponent implements OnInit {
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()
             )
-            .slice(0, 3)
+            .slice(0, 8)
         ),
         catchError(() => {
           this.snackbar.openFailedSnackBar('Failed to load notices');

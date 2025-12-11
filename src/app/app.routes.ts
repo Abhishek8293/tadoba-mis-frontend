@@ -15,6 +15,7 @@ import { DepartmentComponent } from './pages/admin/department/department.compone
 import { authGuard } from './core/auth.guard';
 import { NoticeComponent } from './pages/admin/notice/notice.component';
 import { HighlightComponent } from './pages/admin/highlight/highlight.component';
+import { EmployeeReportComponent } from './pages/admin/employee-report/employee-report.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,7 @@ export const routes: Routes = [
       { path: 'department', component: DepartmentComponent },
       { path: 'notice', component: NoticeComponent },
       { path: 'highlight', component: HighlightComponent },
+      { path: 'reports', component: EmployeeReportComponent },
     ],
   },
   {

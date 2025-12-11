@@ -1,0 +1,123 @@
+<div class="report-container">
+
+    <h2 class="page-title">
+        <mat-icon class="title-icon">assessment</mat-icon>
+        Monthly Employee Report
+    </h2>
+
+    <!-- Filters Section -->
+    <div class="filters">
+
+        <!-- Month -->
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Select Month</mat-label>
+            <mat-select [(ngModel)]="selectedMonth">
+                <mat-option *ngFor="let m of months" [value]="m.value">
+                    {{ m.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Year -->
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Select Year</mat-label>
+            <mat-select [(ngModel)]="selectedYear">
+                <mat-option *ngFor="let y of years" [value]="y">
+                    {{ y }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Employee Dropdown -->
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Select Employee</mat-label>
+            <mat-select [(ngModel)]="selectedEmployee">
+                <mat-option *ngFor="let emp of employees" [value]="emp.id">
+                    {{ emp.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Get Report -->
+        <button mat-flat-button color="primary" class="btn-get" (click)="getReport()">
+            <mat-icon>search</mat-icon>
+            Get Report
+        </button>
+
+        <button mat-icon-button color="warn" class="icon-btn" (click)="clearFilters()">
+            <mat-icon>refresh</mat-icon>
+        </button>
+
+    </div>
+
+    <!-- Summary -->
+    <div *ngIf="showSummary" class="summary-section">
+
+        <h3 class="summary-title">Summary</h3>
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+                <mat-icon class="summary-icon">list_alt</mat-icon>
+                <p class="value">{{ summary.totalTasks }}</p>
+                <p class="label">Total Tasks</p>
+            </div>
+
+            <div class="summary-card green">
+                <mat-icon class="summary-icon">check_circle</mat-icon>
+                <p class="value">{{ summary.completed }}</p>
+                <p class="label">Completed</p>
+            </div>
+
+            <div class="summary-card orange">
+                <mat-icon class="summary-icon">hourglass_empty</mat-icon>
+                <p class="value">{{ summary.pending }}</p>
+                <p class="label">Pending</p>
+            </div>
+
+            <div class="summary-card red">
+                <mat-icon class="summary-icon">schedule</mat-icon>
+                <p class="value">{{ summary.late }}</p>
+                <p class="label">Late Submission</p>
+            </div>
+
+            <div class="summary-card red">
+                <mat-icon class="summary-icon">warning</mat-icon>
+                <p class="value">{{ summary.overdue }}</p>
+                <p class="label">Overdue</p>
+            </div>
+
+            <div class="summary-card">
+                <mat-icon class="summary-icon">grade</mat-icon>
+                <p class="value">{{ summary.avgEmpRating }}</p>
+                <p class="label">Avg Employee Rating</p>
+            </div>
+
+            <div class="summary-card">
+                <mat-icon class="summary-icon">star</mat-icon>
+                <p class="value">{{ summary.avgAdminRating }}</p>
+                <p class="label">Avg Admin Rating</p>
+            </div>
+
+            <div class="summary-card">
+                <mat-icon class="summary-icon">pie_chart</mat-icon>
+                <p class="value">{{ summary.workPercentage }}%</p>
+                <p class="label">Work Percentage</p>
+            </div>
+
+            <div class="summary-card">
+                <mat-icon class="summary-icon">leaderboard</mat-icon>
+                <p class="value">{{ summary.adminScorePercentage }}%</p>
+                <p class="label">Admin Score</p>
+            </div>
+
+        </div>
+
+        <button mat-raised-button class="btn-export" (click)="exportExcel()">
+            <mat-icon>file_download</mat-icon>
+            Export Excel
+        </button>
+
+    </div>
+
+</div>

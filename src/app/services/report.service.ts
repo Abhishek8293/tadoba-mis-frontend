@@ -8,7 +8,7 @@ import { ReportSummary } from '../models/report.model';
   providedIn: 'root',
 })
 export class ReportService {
-  private baseUrl = 'http://localhost:8080/api/report';
+  private baseUrl = 'https://api.tadobasolutions.com/api/report';
 
   constructor(private http: HttpClient) {}
 
